@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Skushy - Custom 3D Printed Keychains</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --white: #ffffff;
+      --black: #111111;
+      --orange: #FF5C00;
+      --orange-light: #FF7A2B;
+      --grey-100: #F5F5F5;
+      --grey-200: #E8E8E8;
+      --grey-400: #999999;
+      --grey-700: #444444;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--white);
+      color: var(--black);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--grey-200);
+    }
+
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: -0.5px;
+      color: var(--black);
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--orange); }
+
+    nav a.nav-link {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--grey-700);
+      text-decoration: none;
+      margin-left: 36px;
+      transition: color 0.2s;
+    }
+
+    nav a.nav-link:hover { color: var(--orange); }
+
+    .nav-cta {
+      background: var(--orange);
+      color: var(--white) !important;
+      padding: 10px 22px;
+      border-radius: 6px;
+      font-weight: 600 !important;
+      transition: background 0.2s !important;
+    }
+
+    .nav-cta:hover { background: var(--orange-light) !important; color: var(--white) !important; }
+
+    /* HERO */
+    .hero {
+      padding: 160px 48px 100px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-label {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(42px, 6vw, 80px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      max-width: 800px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--orange);
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--grey-700);
+      max-width: 520px;
+      line-height: 1.65;
+      margin-bottom: 44px;
+      font-weight: 300;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--black);
+      color: var(--white);
+      padding: 16px 32px;
+      border-radius: 6px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-primary:hover { background: var(--orange); transform: translateY(-1px); }
+
+    .btn-secondary {
+      display: inline-block;
+      color: var(--grey-700);
+      font-size: 15px;
+      font-weight: 500;
+      text-decoration: none;
+      border-bottom: 1px solid var(--grey-400);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .btn-secondary:hover { color: var(--orange); border-color: var(--orange); }
+
+    /* STATS BAR */
+    .stats-bar {
+      background: var(--grey-100);
+      border-top: 1px solid var(--grey-200);
+      border-bottom: 1px solid var(--grey-200);
+      padding: 28px 48px;
+    }
+
+    .stats-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+
+    .stat-item { display: flex; flex-direction: column; gap: 4px; }
+
+    .stat-number {
+      font-family: 'Syne', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--black);
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--grey-400);
+      font-weight: 400;
+    }
+
+    /* WORK SECTION */
+    .section {
+      padding: 100px 48px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 56px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.1;
+    }
+
+    /* PORTFOLIO GRID */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .portfolio-item {
+      position: relative;
+      aspect-ratio: 1/1;
+      overflow: hidden;
+      background: var(--grey-100);
+      cursor: pointer;
+    }
+
+    .portfolio-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .portfolio-item:hover img { transform: scale(1.06); }
+
+    .portfolio-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(17,17,17,0.75);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .portfolio-item:hover .portfolio-overlay { opacity: 1; }
+
+    .portfolio-client {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .portfolio-tag {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--orange);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    /* HOW IT WORKS */
+    .how-section {
+      background: var(--black);
+      color: var(--white);
+      padding: 100px 48px;
+    }
+
+    .how-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .how-inner .section-title { color: var(--white); margin-bottom: 64px; }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .step-number {
+      font-family: 'Syne', sans-serif;
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--orange);
+      line-height: 1;
+    }
+
+    .step-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .step-desc {
+      font-size: 14px;
+      color: #888;
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    /* QUOTE FORM */
+    .quote-section {
+      background: var(--grey-100);
+      padding: 100px 48px;
+    }
+
+    .quote-inner {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .quote-inner .section-label { text-align: center; }
+
+    .quote-inner .section-title {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .quote-subtitle {
+      text-align: center;
+      color: var(--grey-400);
+      font-size: 16px;
+      margin-bottom: 48px;
+      font-weight: 300;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-full { grid-column: 1 / -1; }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--black);
+      letter-spacing: 0.3px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: var(--white);
+      border: 1.5px solid var(--grey-200);
+      border-radius: 6px;
+      padding: 13px 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--black);
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--orange);
+    }
+
+    .form-group textarea { resize: vertical; min-height: 100px; }
+
+    .form-submit {
+      margin-top: 8px;
+      width: 100%;
+      padding: 16px;
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      border-radius: 6px;
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .form-submit:hover { background: var(--orange); transform: translateY(-1px); }
+
+    .form-note {
+      text-align: center;
+      font-size: 13px;
+      color: var(--grey-400);
+      margin-top: 16px;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--black);
+      color: var(--white);
+      padding: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 20px;
+      color: var(--white);
+    }
+
+    .footer-logo span { color: var(--orange); }
+
+    footer p {
+      font-size: 13px;
+      color: #555;
+    }
+
+    /* SUCCESS MESSAGE */
+    .success-msg {
+      display: none;
+      background: #1a1a1a;
+      border: 1.5px solid var(--orange);
+      border-radius: 8px;
+      padding: 24px;
+      text-align: center;
+      color: var(--white);
+      font-size: 15px;
+      margin-top: 16px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .hero { padding: 120px 24px 80px; }
+      .section { padding: 72px 24px; }
+      .stats-bar { padding: 24px; }
+      .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps-grid { grid-template-columns: 1fr 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .how-section { padding: 72px 24px; }
+      .quote-section { padding: 72px 24px; }
+      footer { padding: 36px 24px; }
+    }
+
+    @media (max-width: 480px) {
+      .portfolio-grid { grid-template-columns: 1fr 1fr; }
+      .steps-grid { grid-template-columns: 1fr; }
+      nav .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">Skushy<span>.</span></a>
+    <div class="nav-links">
+      <a href="#work" class="nav-link">Our Work</a>
+      <a href="#how" class="nav-link">How It Works</a>
+      <a href="#quote" class="nav-link nav-cta">Get a Quote</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <span class="hero-label">Custom 3D Printed Keychains</span>
+    <h1>Your brand,<br>in <em>3D.</em></h1>
+    <p>We turn your logo into a high-quality 3D printed keychain. Fast turnaround, competitive pricing, and no minimum order.</p>
+    <div class="hero-actions">
+      <a href="#quote" class="btn-primary">Request a Quote</a>
+      <a href="#work" class="btn-secondary">See our work</a>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stats-inner">
+      <div class="stat-item">
+        <span class="stat-number">48h</span>
+        <span class="stat-label">Average turnaround</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">No MOQ</span>
+        <span class="stat-label">Order as few as you need</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">PLA</span>
+        <span class="stat-label">Durable material, sharp detail</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">BE / NL</span>
+        <span class="stat-label">Shipping across Benelux</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORK -->
+  <div id="work">
+    <div class="section">
+      <div class="section-header">
+        <div>
+          <p class="section-label">Portfolio</p>
+          <h2 class="section-title">Made for real brands.</h2>
+        </div>
+      </div>
+
+      <div class="portfolio-grid">
+
+        <!-- =============================================
+             HOW TO ADD A NEW PRODUCT:
+             1. Copy the block below (from "portfolio-item" to "/portfolio-item")
+             2. Paste it at the end of this grid, before the closing </div>
+             3. Change the image src to: images/your-image-name.png
+             4. Change the client name and tag text
+             Done.
+        ============================================= -->
+
+        <div class="portfolio-item">
+          <img src="images/anna-grace.png" alt="Anna Grace keychain" loading="lazy" />
+          <div class="portfolio-overlay">
+            <span class="portfolio-client">Anna Grace</span>
+            <span class="portfolio-tag">Custom Logo Keychain</span>
+          </div>
+        </div>
+
+        <div class="portfolio-item">
+          <img src="images/bon.png" alt="Bon keychain" loading="lazy" />
+          <div class="portfolio-overlay">
+            <span class="portfolio-client">Bon</span>
+            <span class="portfolio-tag">Custom Logo Keychain</span>
+          </div>
+        </div>
+
+        <div class="portfolio-item">
+          <img src="images/de-metier.png" alt="De Metier keychain" loading="lazy" />
+          <div class="portfolio-overlay">
+            <span class="portfolio-client">De Metier</span>
+            <span class="portfolio-tag">Custom Logo Keychain</span>
+          </div>
+        </div>
+
+        <div class="portfolio-item">
+          <img src="images/immotrix.png" alt="IMMOTRIX keychain" loading="lazy" />
+          <div class="portfolio-overlay">
+            <span class="portfolio-client">IMMOTRIX</span>
+            <span class="portfolio-tag">Custom Logo Keychain</span>
+          </div>
+        </div>
+
+        <div class="portfolio-item">
+          <img src="images/pearle.png" alt="Pearle keychain" loading="lazy" />
+          <div class="portfolio-overlay">
+            <span class="portfolio-client">Pearle</span>
+            <span class="portfolio-tag">Custom Logo Keychain</span>
+          </div>
+        </div>
+
+        <div class="portfolio-item">
+          <img src="images/exxxtreme-sports.png" alt="exxxtreme sports keychain" loading="lazy" />
+          <div class="portfolio-overlay">
+            <span class="portfolio-client">exxxtreme sports</span>
+            <span class="portfolio-tag">Custom Logo Keychain</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-section" id="how">
+    <div class="how-inner">
+      <p class="section-label" style="margin-bottom:12px;">Process</p>
+      <h2 class="section-title">How it works.</h2>
+      <div style="height:48px"></div>
+      <div class="steps-grid">
+        <div class="step">
+          <span class="step-number">01</span>
+          <span class="step-title">Send your logo</span>
+          <p class="step-desc">Fill in the quote form with your logo file and quantity. We handle the rest.</p>
+        </div>
+        <div class="step">
+          <span class="step-number">02</span>
+          <span class="step-title">We design it</span>
+          <p class="step-desc">We turn your logo into a 3D model, optimized for clean printing and sharp detail.</p>
+        </div>
+        <div class="step">
+          <span class="step-number">03</span>
+          <span class="step-title">You approve</span>
+          <p class="step-desc">We send a preview before printing. You say go, we start production.</p>
+        </div>
+        <div class="step">
+          <span class="step-number">04</span>
+          <span class="step-title">Delivered</span>
+          <p class="step-desc">Your keychains are packed and shipped anywhere in Belgium or the Netherlands.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE FORM -->
+  <section class="quote-section" id="quote">
+    <div class="quote-inner">
+      <p class="section-label">Get started</p>
+      <h2 class="section-title">Request a quote.</h2>
+      <p class="quote-subtitle">Fill in the form and we will get back to you within 24 hours.</p>
+
+      <form id="quoteForm" onsubmit="handleSubmit(event)">
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label for="name">Your name</label>
+            <input type="text" id="name" placeholder="Jan De Smedt" required />
+          </div>
+
+          <div class="form-group">
+            <label for="company">Company name</label>
+            <input type="text" id="company" placeholder="Your company" required />
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" id="email" placeholder="jan@company.com" required />
+          </div>
+
+          <div class="form-group">
+            <label for="quantity">Quantity</label>
+            <select id="quantity" required>
+              <option value="" disabled selected>Select quantity</option>
+              <option value="1-10">1 to 10</option>
+              <option value="11-25">11 to 25</option>
+              <option value="26-50">26 to 50</option>
+              <option value="51-100">51 to 100</option>
+              <option value="100+">100 or more</option>
+            </select>
+          </div>
+
+          <div class="form-group form-full">
+            <label for="message">Anything else we should know?</label>
+            <textarea id="message" placeholder="Color preferences, deadline, special requests..."></textarea>
+          </div>
+
+        </div>
+
+        <button type="submit" class="form-submit">Send Quote Request</button>
+        <p class="form-note">No commitment. We reply within 24 hours.</p>
+      </form>
+
+      <div class="success-msg" id="successMsg">
+        Your request has been sent. We will get back to you within 24 hours.
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-logo">Skushy<span>.</span></span>
+    <p>Custom 3D printed keychains for businesses in Belgium and the Netherlands.</p>
+    <p style="color:#444">&copy; 2026 Skushy</p>
+  </footer>
+
+  <script>
+    function handleSubmit(e) {
+      e.preventDefault();
+      document.getElementById('quoteForm').style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+    }
+
+    // Smooth reveal on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.portfolio-item, .step').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      observer.observe(el);
+    });
+  </script>
+
+</body>
+</html>
