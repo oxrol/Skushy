@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Skushy - Custom 3D Printed Keychains</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -43,7 +43,7 @@
     }
 
     .nav-logo {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Familjen Grotesk', sans-serif;
       font-weight: 800;
       font-size: 22px;
       letter-spacing: -0.5px;
@@ -93,7 +93,7 @@
     }
 
     .hero h1 {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Familjen Grotesk', sans-serif;
       font-size: clamp(42px, 6vw, 80px);
       font-weight: 800;
       line-height: 1.05;
@@ -170,7 +170,7 @@
     .stat-item { display: flex; flex-direction: column; gap: 4px; }
 
     .stat-number {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Familjen Grotesk', sans-serif;
       font-size: 28px;
       font-weight: 800;
       color: var(--black);
@@ -208,7 +208,7 @@
     }
 
     .section-title {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Familjen Grotesk', sans-serif;
       font-size: clamp(28px, 4vw, 44px);
       font-weight: 800;
       letter-spacing: -1px;
@@ -256,7 +256,7 @@
     .portfolio-item:hover .portfolio-overlay { opacity: 1; }
 
     .portfolio-client {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Familjen Grotesk', sans-serif;
       font-size: 20px;
       font-weight: 700;
       color: var(--white);
@@ -298,7 +298,7 @@
     }
 
     .step-number {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Familjen Grotesk', sans-serif;
       font-size: 48px;
       font-weight: 800;
       color: var(--orange);
@@ -306,7 +306,7 @@
     }
 
     .step-title {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Familjen Grotesk', sans-serif;
       font-size: 18px;
       font-weight: 700;
       color: var(--white);
@@ -397,7 +397,7 @@
       color: var(--white);
       border: none;
       border-radius: 6px;
-      font-family: 'Syne', sans-serif;
+      font-family: 'Familjen Grotesk', sans-serif;
       font-size: 15px;
       font-weight: 700;
       cursor: pointer;
@@ -427,7 +427,7 @@
     }
 
     .footer-logo {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Familjen Grotesk', sans-serif;
       font-weight: 800;
       font-size: 20px;
       color: var(--white);
@@ -438,6 +438,106 @@
     footer p {
       font-size: 13px;
       color: #555;
+    }
+
+    /* ABOUT SECTION */
+    .about-section {
+      padding: 100px 48px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .about-left .section-label { margin-bottom: 12px; }
+
+    .about-left .section-title { margin-bottom: 28px; }
+
+    .about-left p {
+      font-size: 16px;
+      color: var(--grey-700);
+      line-height: 1.75;
+      font-weight: 300;
+      margin-bottom: 20px;
+    }
+
+    .about-left p:last-of-type { margin-bottom: 0; }
+
+    .about-right {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .about-card {
+      background: var(--grey-100);
+      border-left: 3px solid var(--orange);
+      padding: 24px 28px;
+      border-radius: 0 6px 6px 0;
+    }
+
+    .about-card-title {
+      font-family: 'Familjen Grotesk', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 8px;
+    }
+
+    .about-card p {
+      font-size: 14px;
+      color: var(--grey-700);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    .founder-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 32px;
+      padding: 14px 20px;
+      background: var(--black);
+      border-radius: 6px;
+    }
+
+    .founder-avatar {
+      width: 36px;
+      height: 36px;
+      background: var(--orange);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Familjen Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      color: var(--white);
+    }
+
+    .founder-info { display: flex; flex-direction: column; gap: 2px; }
+
+    .founder-name {
+      font-family: 'Familjen Grotesk', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .founder-role {
+      font-size: 12px;
+      color: #888;
+      font-weight: 300;
+    }
+
+    @media (max-width: 768px) {
+      .about-section { padding: 72px 24px; }
+      .about-grid { grid-template-columns: 1fr; gap: 48px; }
     }
 
     /* SUCCESS MESSAGE */
@@ -482,6 +582,7 @@
     <div class="nav-links">
       <a href="#work" class="nav-link">Our Work</a>
       <a href="#how" class="nav-link">How It Works</a>
+      <a href="#about" class="nav-link">About</a>
       <a href="#quote" class="nav-link nav-cta">Get a Quote</a>
     </div>
   </nav>
@@ -619,6 +720,46 @@
           <span class="step-title">Delivered</span>
           <p class="step-desc">Your keychains are packed and shipped anywhere in Belgium or the Netherlands.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-section">
+      <div class="about-grid">
+
+        <div class="about-left">
+          <p class="section-label">About us</p>
+          <h2 class="section-title">We started small.<br>We think big.</h2>
+          <p>Skushy started with one printer, one idea, and a lot of trial and error. We wanted to make something real, something you could hold in your hand and actually be proud of.</p>
+          <p>Today we work with companies across Belgium and the Netherlands, turning their logos into high-quality 3D printed keychains. Not mass-produced. Not generic. Made specifically for each brand.</p>
+          <p>Every business deserves to look the part. That is why we offer a free sample quote with your own logo, no strings attached. See it before you commit.</p>
+
+          <div class="founder-tag">
+            <div class="founder-avatar">E</div>
+            <div class="founder-info">
+              <span class="founder-name">Efe</span>
+              <span class="founder-role">Founder, Skushy</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-right">
+          <div class="about-card">
+            <p class="about-card-title">Free sample for your brand</p>
+            <p>Send us your logo and we print a sample keychain for free. You see the quality before placing a single order.</p>
+          </div>
+          <div class="about-card">
+            <p class="about-card-title">Quality over quantity</p>
+            <p>We use PLA with sharp detail and clean finishes. No blurry logos. No rough edges. If it does not look good, we reprint it.</p>
+          </div>
+          <div class="about-card">
+            <p class="about-card-title">Built for businesses</p>
+            <p>Trade fairs, welcome packages, branded gifts. Our keychains help companies make a lasting impression without spending a lot.</p>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
