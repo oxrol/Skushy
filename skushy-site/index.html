@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Skushy - Custom 3D Printed Keychains</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --white: #ffffff;
+      --black: #111111;
+      --orange: #FF5C00;
+      --orange-light: #FF7A2B;
+      --grey-100: #F5F5F5;
+      --grey-200: #E8E8E8;
+      --grey-400: #999999;
+      --grey-700: #444444;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--white);
+      color: var(--black);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--grey-200);
+    }
+
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: -0.5px;
+      color: var(--black);
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--orange); }
+
+    nav a.nav-link {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--grey-700);
+      text-decoration: none;
+      margin-left: 36px;
+      transition: color 0.2s;
+    }
+
+    nav a.nav-link:hover { color: var(--orange); }
+
+    .nav-cta {
+      background: var(--orange);
+      color: var(--white) !important;
+      padding: 10px 22px;
+      border-radius: 6px;
+      font-weight: 600 !important;
+      transition: background 0.2s !important;
+    }
+
+    .nav-cta:hover { background: var(--orange-light) !important; color: var(--white) !important; }
+
+    /* HERO */
+    .hero {
+      padding: 160px 48px 100px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-label {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(42px, 6vw, 80px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      max-width: 800px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--orange);
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--grey-700);
+      max-width: 520px;
+      line-height: 1.65;
+      margin-bottom: 44px;
+      font-weight: 300;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--black);
+      color: var(--white);
+      padding: 16px 32px;
+      border-radius: 6px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-primary:hover { background: var(--orange); transform: translateY(-1px); }
+
+    .btn-secondary {
+      display: inline-block;
+      color: var(--grey-700);
+      font-size: 15px;
+      font-weight: 500;
+      text-decoration: none;
+      border-bottom: 1px solid var(--grey-400);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .btn-secondary:hover { color: var(--orange); border-color: var(--orange); }
+
+    /* STATS BAR */
+    .stats-bar {
+      background: var(--grey-100);
+      border-top: 1px solid var(--grey-200);
+      border-bottom: 1px solid var(--grey-200);
+      padding: 28px 48px;
+    }
+
+    .stats-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+
+    .stat-item { display: flex; flex-direction: column; gap: 4px; }
+
+    .stat-number {
+      font-family: 'Syne', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--black);
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--grey-400);
+      font-weight: 400;
+    }
+
+    /* WORK SECTION */
+    .section {
+      padding: 100px 48px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 56px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.1;
+    }
+
+    /* PORTFOLIO GRID */
+    .portfolio-wrapper {
+      position: relative;
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .portfolio-item {
+      position: relative;
+      aspect-ratio: 1/1;
+      overflow: hidden;
+      background: var(--grey-100);
+      cursor: pointer;
+      display: none;
+    }
+
+    .portfolio-item.active {
+      display: block;
+    }
+
+    .portfolio-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .portfolio-item:hover img { transform: scale(1.06); }
+
+    .portfolio-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(17,17,17,0.75);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .portfolio-item:hover .portfolio-overlay { opacity: 1; }
+
+    .portfolio-client {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .portfolio-tag {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--orange);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .portfolio-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    .portfolio-nav button {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1.5px solid var(--grey-200);
+      background: var(--white);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, border-color 0.2s;
+      font-size: 18px;
+      color: var(--black);
+    }
+
+    .portfolio-nav button:hover {
+      background: var(--orange);
+      border-color: var(--orange);
+      color: var(--white);
+    }
+
+    .portfolio-nav button:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+
+    .portfolio-nav button:disabled:hover {
+      background: var(--white);
+      border-color: var(--grey-200);
+      color: var(--black);
+    }
+
+    .portfolio-counter {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--grey-400);
+      min-width: 60px;
+      text-align: center;
+    }
+
+    /* HOW IT WORKS */
+    .how-section {
+      background: var(--black);
+      color: var(--white);
+      padding: 100px 48px;
+    }
+
+    .how-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .how-inner .section-title { color: var(--white); margin-bottom: 64px; }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .step-number {
+      font-family: 'Syne', sans-serif;
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--orange);
+      line-height: 1;
+    }
+
+    .step-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .step-desc {
+      font-size: 14px;
+      color: #888;
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    /* QUOTE FORM */
+    .quote-section {
+      background: var(--grey-100);
+      padding: 100px 48px;
+    }
+
+    .quote-inner {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .quote-inner .section-label { text-align: center; }
+
+    .quote-inner .section-title {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .quote-subtitle {
+      text-align: center;
+      color: var(--grey-400);
+      font-size: 16px;
+      margin-bottom: 48px;
+      font-weight: 300;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-full { grid-column: 1 / -1; }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--black);
+      letter-spacing: 0.3px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: var(--white);
+      border: 1.5px solid var(--grey-200);
+      border-radius: 6px;
+      padding: 13px 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--black);
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--orange);
+    }
+
+    .form-group textarea { resize: vertical; min-height: 100px; }
+
+    .form-submit {
+      margin-top: 8px;
+      width: 100%;
+      padding: 16px;
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      border-radius: 6px;
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .form-submit:hover { background: var(--orange); transform: translateY(-1px); }
+
+    .form-note {
+      text-align: center;
+      font-size: 13px;
+      color: var(--grey-400);
+      margin-top: 16px;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--black);
+      color: var(--white);
+      padding: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 20px;
+      color: var(--white);
+    }
+
+    .footer-logo span { color: var(--orange); }
+
+    footer p {
+      font-size: 13px;
+      color: #555;
+    }
+
+    /* ABOUT SECTION */
+    .about-section {
+      padding: 100px 48px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .about-left .section-label { margin-bottom: 12px; }
+
+    .about-left .section-title { margin-bottom: 28px; }
+
+    .about-left p {
+      font-size: 16px;
+      color: var(--grey-700);
+      line-height: 1.75;
+      font-weight: 300;
+      margin-bottom: 20px;
+    }
+
+    .about-left p:last-of-type { margin-bottom: 0; }
+
+    .about-right {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .about-card {
+      background: var(--grey-100);
+      border-left: 3px solid var(--orange);
+      padding: 24px 28px;
+      border-radius: 0 6px 6px 0;
+    }
+
+    .about-card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 8px;
+    }
+
+    .about-card p {
+      font-size: 14px;
+      color: var(--grey-700);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    .founder-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 32px;
+      padding: 14px 20px;
+      background: var(--black);
+      border-radius: 6px;
+    }
+
+    .founder-avatar {
+      width: 36px;
+      height: 36px;
+      background: var(--orange);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      color: var(--white);
+    }
+
+    .founder-info { display: flex; flex-direction: column; gap: 2px; }
+
+    .founder-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .founder-role {
+      font-size: 12px;
+      color: #888;
+      font-weight: 300;
+    }
+
+    @media (max-width: 768px) {
+      .about-section { padding: 72px 24px; }
+      .about-grid { grid-template-columns: 1fr; gap: 48px; }
+    }
+
+    /* SUCCESS MESSAGE */
+    .success-msg {
+      display: none;
+      background: #1a1a1a;
+      border: 1.5px solid var(--orange);
+      border-radius: 8px;
+      padding: 24px;
+      text-align: center;
+      color: var(--white);
+      font-size: 15px;
+      margin-top: 16px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .hero { padding: 120px 24px 80px; }
+      .section { padding: 72px 24px; }
+      .stats-bar { padding: 24px; }
+      .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps-grid { grid-template-columns: 1fr 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .how-section { padding: 72px 24px; }
+      .quote-section { padding: 72px 24px; }
+      footer { padding: 36px 24px; }
+    }
+
+    @media (max-width: 480px) {
+      .portfolio-grid { grid-template-columns: 1fr 1fr; }
+      .steps-grid { grid-template-columns: 1fr; }
+      nav .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">Skushy<span>.</span></a>
+    <div class="nav-links">
+      <a href="#work" class="nav-link">Our Work</a>
+      <a href="#how" class="nav-link">How It Works</a>
+      <a href="#about" class="nav-link">About</a>
+      <a href="#quote" class="nav-link nav-cta">Get a Quote</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <span class="hero-label">Custom 3D Printed Keychains</span>
+    <h1>Your brand,<br>in <em>3D.</em></h1>
+    <p>We turn your logo into a high-quality 3D printed keychain. Fast turnaround, competitive pricing, and no minimum order.</p>
+    <div class="hero-actions">
+      <a href="#quote" class="btn-primary">Request a Quote</a>
+      <a href="#work" class="btn-secondary">See our work</a>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stats-inner">
+      <div class="stat-item">
+        <span class="stat-number">48h</span>
+        <span class="stat-label">Average turnaround</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">No MOQ</span>
+        <span class="stat-label">Order as few as you need</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">PLA</span>
+        <span class="stat-label">Durable material, sharp detail</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">BE / NL</span>
+        <span class="stat-label">Shipping across Benelux</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORK -->
+  <div id="work">
+    <div class="section">
+      <div class="section-header">
+        <div>
+          <p class="section-label">Portfolio</p>
+          <h2 class="section-title">Made for real brands.</h2>
+        </div>
+      </div>
+
+      <div class="portfolio-wrapper">
+        <div class="portfolio-grid" id="portfolioGrid">
+          <!-- Images loaded automatically from /images folder -->
+        </div>
+
+        <div class="portfolio-nav">
+          <button id="prevBtn" onclick="changePage(-1)" disabled>&#8592;</button>
+          <span class="portfolio-counter" id="pageCounter">1 / 1</span>
+          <button id="nextBtn" onclick="changePage(1)">&#8594;</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-section" id="how">
+    <div class="how-inner">
+      <p class="section-label" style="margin-bottom:12px;">Process</p>
+      <h2 class="section-title">How it works.</h2>
+      <div style="height:48px"></div>
+      <div class="steps-grid">
+        <div class="step">
+          <span class="step-number">01</span>
+          <span class="step-title">Send your logo</span>
+          <p class="step-desc">Fill in the quote form with your logo file and quantity. We handle the rest.</p>
+        </div>
+        <div class="step">
+          <span class="step-number">02</span>
+          <span class="step-title">We design it</span>
+          <p class="step-desc">We turn your logo into a 3D model, optimized for clean printing and sharp detail.</p>
+        </div>
+        <div class="step">
+          <span class="step-number">03</span>
+          <span class="step-title">You approve</span>
+          <p class="step-desc">We send a preview before printing. You say go, we start production.</p>
+        </div>
+        <div class="step">
+          <span class="step-number">04</span>
+          <span class="step-title">Delivered</span>
+          <p class="step-desc">Your keychains are packed and shipped anywhere in Belgium or the Netherlands.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-section">
+      <div class="about-grid">
+
+        <div class="about-left">
+          <p class="section-label">About us</p>
+          <h2 class="section-title">We started small.<br>We think big.</h2>
+          <p>Skushy started with one printer, one idea, and a lot of trial and error. We wanted to make something real, something you could hold in your hand and actually be proud of.</p>
+          <p>Today we work with companies across Belgium and the Netherlands, turning their logos into high-quality 3D printed keychains. Not mass-produced. Not generic. Made specifically for each brand.</p>
+          <p>Every business deserves to look the part. That is why we offer a free sample quote with your own logo, no strings attached. See it before you commit.</p>
+
+          <div class="founder-tag">
+            <div class="founder-avatar">E</div>
+            <div class="founder-info">
+              <span class="founder-name">Efe</span>
+              <span class="founder-role">Founder, Skushy</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-right">
+          <div class="about-card">
+            <p class="about-card-title">Free sample for your brand</p>
+            <p>Send us your logo and we print a sample keychain for free. You see the quality before placing a single order.</p>
+          </div>
+          <div class="about-card">
+            <p class="about-card-title">Quality over quantity</p>
+            <p>We use PLA with sharp detail and clean finishes. No blurry logos. No rough edges. If it does not look good, we reprint it.</p>
+          </div>
+          <div class="about-card">
+            <p class="about-card-title">Built for businesses</p>
+            <p>Trade fairs, welcome packages, branded gifts. Our keychains help companies make a lasting impression without spending a lot.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE FORM -->
+  <section class="quote-section" id="quote">
+    <div class="quote-inner">
+      <p class="section-label">Get started</p>
+      <h2 class="section-title">Request a quote.</h2>
+      <p class="quote-subtitle">Fill in the form and we will get back to you within 24 hours.</p>
+
+      <form id="quoteForm" onsubmit="handleSubmit(event)" enctype="multipart/form-data">
+        <input type="hidden" name="access_key" value="c74c9c86-f505-44e6-bdb0-0cc12d97d098" />
+        <input type="hidden" name="subject" value="New Quote Request - Skushy" />
+
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label for="name">Your name *</label>
+            <input type="text" id="name" name="name" placeholder="Jan De Smedt" required />
+          </div>
+
+          <div class="form-group">
+            <label for="company">Company name *</label>
+            <input type="text" id="company" name="company" placeholder="Your company" required />
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email address *</label>
+            <input type="email" id="email" name="email" placeholder="jan@company.com" required />
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone number</label>
+            <input type="tel" id="phone" name="phone" placeholder="+32 470 00 00 00" />
+          </div>
+
+          <div class="form-group">
+            <label for="quantity">Quantity *</label>
+            <select id="quantity" name="quantity" required>
+              <option value="" disabled selected>Select quantity</option>
+              <option value="1-10">1 to 10</option>
+              <option value="11-25">11 to 25</option>
+              <option value="26-50">26 to 50</option>
+              <option value="51-100">51 to 100</option>
+              <option value="100+">100 or more</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="website">Website or Google Maps link</label>
+            <input type="url" id="website" name="website" placeholder="https://yourcompany.com" />
+          </div>
+
+          <div class="form-group form-full">
+            <label for="logo">Upload your logo</label>
+            <input type="file" id="logo" name="logo" accept=".png,.jpg,.jpeg,.svg,.pdf,.ai,.eps" style="padding: 10px 16px; cursor: pointer;" />
+            <span style="font-size: 12px; color: var(--grey-400); margin-top: 4px;">PNG, JPG, SVG, PDF, AI or EPS. Max 10MB.</span>
+          </div>
+
+          <div class="form-group form-full">
+            <label for="message">Anything else we should know?</label>
+            <textarea id="message" name="message" placeholder="Color preferences, deadline, special requests..."></textarea>
+          </div>
+
+        </div>
+
+        <button type="submit" class="form-submit" id="submitBtn">Send Quote Request</button>
+        <p class="form-note">No commitment. We reply within 24 hours.</p>
+      </form>
+
+      <div class="success-msg" id="successMsg">
+        Your request has been sent. We will get back to you within 24 hours.
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-logo">Skushy<span>.</span></span>
+    <p>Custom 3D printed keychains for businesses in Belgium and the Netherlands.</p>
+    <p style="color:#444">&copy; 2026 Skushy</p>
+  </footer>
+
+  <script>
+    // PORTFOLIO - load images dynamically from API
+    const PER_PAGE = 6;
+    let currentPage = 0;
+    let allImages = [];
+
+    function buildGrid(images) {
+      allImages = images;
+      const grid = document.getElementById('portfolioGrid');
+      grid.innerHTML = '';
+
+      images.forEach(filename => {
+        const name = filename.replace(/\.[^.]+$/, '');
+        const div = document.createElement('div');
+        div.className = 'portfolio-item';
+        div.innerHTML = `
+          <img src="images/${filename}" loading="lazy" />
+          <div class="portfolio-overlay">
+            <span class="portfolio-client">${name}</span>
+            <span class="portfolio-tag">Custom Logo Keychain</span>
+          </div>`;
+        grid.appendChild(div);
+      });
+
+      showPage(0);
+    }
+
+    function getItems() {
+      return Array.from(document.querySelectorAll('.portfolio-item'));
+    }
+
+    function totalPages() {
+      return Math.max(1, Math.ceil(getItems().length / PER_PAGE));
+    }
+
+    function showPage(page) {
+      const items = getItems();
+      const total = totalPages();
+      currentPage = Math.max(0, Math.min(page, total - 1));
+
+      items.forEach((item, i) => {
+        const inPage = i >= currentPage * PER_PAGE && i < (currentPage + 1) * PER_PAGE;
+        item.classList.toggle('active', inPage);
+      });
+
+      document.getElementById('prevBtn').disabled = currentPage === 0;
+      document.getElementById('nextBtn').disabled = currentPage >= total - 1;
+      document.getElementById('pageCounter').textContent = (currentPage + 1) + ' / ' + total;
+    }
+
+    function changePage(dir) {
+      showPage(currentPage + dir);
+    }
+
+    // Fetch image list from API
+    fetch('/api/images')
+      .then(r => r.json())
+      .then(data => buildGrid(data.images || []))
+      .catch(() => buildGrid([]));
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      btn.textContent = 'Sending...';
+      btn.disabled = true;
+
+      const form = document.getElementById('quoteForm');
+      const formData = new FormData(form);
+
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          form.style.display = 'none';
+          document.getElementById('successMsg').style.display = 'block';
+        } else {
+          btn.textContent = 'Send Quote Request';
+          btn.disabled = false;
+          alert('Something went wrong. Please try again.');
+        }
+      })
+      .catch(() => {
+        btn.textContent = 'Send Quote Request';
+        btn.disabled = false;
+        alert('Something went wrong. Please try again.');
+      });
+    }
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.step').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      observer.observe(el);
+    });
+  </script>
+
+</body>
+</html>
