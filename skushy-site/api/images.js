@@ -2,16 +2,24 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = (req, res) => {
-  const imagesDir = path.join(process.cwd(), 'images');
+  const candidates = [
+    path.join(process.cwd(), 'skushy-site', 'images'),
+    path.join(process.cwd(), 'images'),
+    '/var/task/skushy-site/images',
+    '/var/task/images',
+  ];
 
-  try {
-    const files = fs.readdirSync(imagesDir).filter(f =>
-      /\.(png|jpg|jpeg|webp)$/i.test(f)
-    );
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.json({ images: files });
-  } catch (e) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.json({ images: [], error: e.message, cwd: process.cwd() });
+  let files = [];
+  let usedPath = '';
+
+  for (const dir of candidates) {
+    try {
+      files = fs.readdirSync(dir).filter(f => /\.(png|jpg|jpeg|webp)$/i.test(f));
+      usedPath = dir;
+      break;
+    } catch (e) {}
   }
+
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.json({ images: files, usedPath });
 };
