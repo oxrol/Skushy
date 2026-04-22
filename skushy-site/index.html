@@ -598,6 +598,44 @@
       .about-grid { grid-template-columns: 1fr; gap: 48px; }
     }
 
+    /* DISCLAIMER */
+    .portfolio-disclaimer-inline {
+      text-align: center;
+      font-size: 11px;
+      color: var(--grey-400);
+      margin-top: 12px;
+      letter-spacing: 0.5px;
+      font-style: italic;
+    }
+
+    .disclaimer-bar {
+      background: var(--grey-100);
+      border-top: 1px solid var(--grey-200);
+      padding: 24px 48px;
+    }
+
+    .disclaimer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .disclaimer-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--grey-700);
+      margin-bottom: 8px;
+    }
+
+    .disclaimer-inner p:last-child {
+      font-size: 12px;
+      color: var(--grey-400);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
     /* SUCCESS MESSAGE */
     .success-msg {
       display: none;
@@ -699,7 +737,17 @@
           <button id="nextBtn" onclick="changePage(1)">&#8594;</button>
         </div>
 
+        <p class="portfolio-disclaimer-inline">Concept Design – Not Affiliated with Brand</p>
+
       </div>
+    </div>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer-bar">
+    <div class="disclaimer-inner">
+      <p class="disclaimer-title">Disclaimer</p>
+      <p>All designs shown are original concept works by Skushy, created for portfolio purposes only. Any brand names, logos, or trademarks belong to their respective owners and are used solely to demonstrate design capabilities. No affiliation, endorsement, or partnership is implied. These items are not official products and are not offered for sale. If you are a rights holder and wish to request removal, please contact us.</p>
     </div>
   </div>
 
