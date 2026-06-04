@@ -1,1020 +1,707 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Skushy - Custom 3D Printed Keychains</title>
-  <link rel="icon" href="/favicon.ico">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="manifest" href="/site.webmanifest">
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --white: #ffffff;
-      --black: #111111;
-      --orange: #FF5C00;
-      --orange-light: #FF7A2B;
-      --grey-100: #F5F5F5;
-      --grey-200: #E8E8E8;
-      --grey-400: #999999;
-      --grey-700: #444444;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--white);
-      color: var(--black);
-      overflow-x: hidden;
-    }
-
-    /* NAV */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20px 48px;
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--grey-200);
-    }
-
-    .nav-logo {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 22px;
-      letter-spacing: -0.5px;
-      color: var(--black);
-      text-decoration: none;
-    }
-
-    .nav-logo span { color: var(--orange); }
-
-    nav a.nav-link {
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--grey-700);
-      text-decoration: none;
-      margin-left: 36px;
-      transition: color 0.2s;
-    }
-
-    nav a.nav-link:hover { color: var(--orange); }
-
-    .nav-cta {
-      background: var(--orange);
-      color: var(--white) !important;
-      padding: 10px 22px;
-      border-radius: 6px;
-      font-weight: 600 !important;
-      transition: background 0.2s !important;
-    }
-
-    .nav-cta:hover { background: var(--orange-light) !important; color: var(--white) !important; }
-
-    /* HERO */
-    .hero {
-      padding: 160px 48px 100px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .hero-label {
-      display: inline-block;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--orange);
-      margin-bottom: 24px;
-    }
-
-    .hero h1 {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(42px, 6vw, 80px);
-      font-weight: 800;
-      line-height: 1.05;
-      letter-spacing: -2px;
-      max-width: 800px;
-      margin-bottom: 24px;
-    }
-
-    .hero h1 em {
-      font-style: normal;
-      color: var(--orange);
-    }
-
-    .hero p {
-      font-size: 18px;
-      color: var(--grey-700);
-      max-width: 520px;
-      line-height: 1.65;
-      margin-bottom: 44px;
-      font-weight: 300;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .btn-primary {
-      display: inline-block;
-      background: var(--black);
-      color: var(--white);
-      padding: 16px 32px;
-      border-radius: 6px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 15px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: background 0.2s, transform 0.15s;
-    }
-
-    .btn-primary:hover { background: var(--orange); transform: translateY(-1px); }
-
-    .btn-secondary {
-      display: inline-block;
-      color: var(--grey-700);
-      font-size: 15px;
-      font-weight: 500;
-      text-decoration: none;
-      border-bottom: 1px solid var(--grey-400);
-      padding-bottom: 2px;
-      transition: color 0.2s, border-color 0.2s;
-    }
-
-    .btn-secondary:hover { color: var(--orange); border-color: var(--orange); }
-
-    /* STATS BAR */
-    .stats-bar {
-      background: var(--grey-100);
-      border-top: 1px solid var(--grey-200);
-      border-bottom: 1px solid var(--grey-200);
-      padding: 28px 48px;
-    }
-
-    .stats-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      gap: 48px;
-      flex-wrap: wrap;
-    }
-
-    .stat-item { display: flex; flex-direction: column; gap: 4px; }
-
-    .stat-number {
-      font-family: 'Syne', sans-serif;
-      font-size: 28px;
-      font-weight: 800;
-      color: var(--black);
-    }
-
-    .stat-label {
-      font-size: 13px;
-      color: var(--grey-400);
-      font-weight: 400;
-    }
-
-    /* WORK SECTION */
-    .section {
-      padding: 100px 48px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .section-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      margin-bottom: 56px;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
-    .section-label {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--orange);
-      margin-bottom: 10px;
-    }
-
-    .section-title {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(28px, 4vw, 44px);
-      font-weight: 800;
-      letter-spacing: -1px;
-      line-height: 1.1;
-    }
-
-    /* PORTFOLIO GRID */
-    .portfolio-wrapper {
-      position: relative;
-    }
-
-    .portfolio-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
-    }
-
-    .portfolio-item {
-      position: relative;
-      aspect-ratio: 1/1;
-      overflow: hidden;
-      background: var(--grey-100);
-      cursor: pointer;
-      display: none;
-    }
-
-    .portfolio-item.active {
-      display: block;
-    }
-
-    .portfolio-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.4s ease;
-    }
-
-    .portfolio-item:hover img { transform: scale(1.06); }
-
-    .portfolio-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(17,17,17,0.75);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      padding: 24px;
-      text-align: center;
-    }
-
-    .portfolio-item:hover .portfolio-overlay { opacity: 1; }
-
-    .portfolio-client {
-      font-family: 'Syne', sans-serif;
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--white);
-      margin-bottom: 8px;
-    }
-
-    .portfolio-tag {
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--orange);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-    }
-
-    .portfolio-nav {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      margin-top: 32px;
-    }
-
-    .portfolio-nav button {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: 1.5px solid var(--grey-200);
-      background: var(--white);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s, border-color 0.2s;
-      font-size: 18px;
-      color: var(--black);
-    }
-
-    .portfolio-nav button:hover {
-      background: var(--orange);
-      border-color: var(--orange);
-      color: var(--white);
-    }
-
-    .portfolio-nav button:disabled {
-      opacity: 0.3;
-      cursor: default;
-    }
-
-    .portfolio-nav button:disabled:hover {
-      background: var(--white);
-      border-color: var(--grey-200);
-      color: var(--black);
-    }
-
-    .portfolio-counter {
-      font-family: 'Syne', sans-serif;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--grey-400);
-      min-width: 60px;
-      text-align: center;
-    }
-
-    /* HOW IT WORKS */
-    .how-section {
-      background: var(--black);
-      color: var(--white);
-      padding: 100px 48px;
-    }
-
-    .how-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .how-inner .section-title { color: var(--white); margin-bottom: 64px; }
-
-    .steps-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 32px;
-    }
-
-    .step {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .step-number {
-      font-family: 'Syne', sans-serif;
-      font-size: 48px;
-      font-weight: 800;
-      color: var(--orange);
-      line-height: 1;
-    }
-
-    .step-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--white);
-    }
-
-    .step-desc {
-      font-size: 14px;
-      color: #888;
-      line-height: 1.6;
-      font-weight: 300;
-    }
-
-    /* QUOTE FORM */
-    .quote-section {
-      background: var(--grey-100);
-      padding: 100px 48px;
-    }
-
-    .quote-inner {
-      max-width: 700px;
-      margin: 0 auto;
-    }
-
-    .quote-inner .section-label { text-align: center; }
-
-    .quote-inner .section-title {
-      text-align: center;
-      margin-bottom: 12px;
-    }
-
-    .quote-subtitle {
-      text-align: center;
-      color: var(--grey-400);
-      font-size: 16px;
-      margin-bottom: 48px;
-      font-weight: 300;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-
-    .form-full { grid-column: 1 / -1; }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .form-group label {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--black);
-      letter-spacing: 0.3px;
-    }
-
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      background: var(--white);
-      border: 1.5px solid var(--grey-200);
-      border-radius: 6px;
-      padding: 13px 16px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      color: var(--black);
-      outline: none;
-      transition: border-color 0.2s;
-      width: 100%;
-    }
-
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      border-color: var(--orange);
-    }
-
-    .form-group textarea { resize: vertical; min-height: 100px; }
-
-    .form-submit {
-      margin-top: 8px;
-      width: 100%;
-      padding: 16px;
-      background: var(--black);
-      color: var(--white);
-      border: none;
-      border-radius: 6px;
-      font-family: 'Syne', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      letter-spacing: 0.5px;
-      transition: background 0.2s, transform 0.15s;
-    }
-
-    .form-submit:hover { background: var(--orange); transform: translateY(-1px); }
-
-    .form-note {
-      text-align: center;
-      font-size: 13px;
-      color: var(--grey-400);
-      margin-top: 16px;
-    }
-
-    /* FOOTER */
-    footer {
-      background: var(--black);
-      color: var(--white);
-      padding: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
-    .footer-logo {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 20px;
-      color: var(--white);
-    }
-
-    .footer-logo span { color: var(--orange); }
-
-    footer p {
-      font-size: 13px;
-      color: #555;
-    }
-
-    /* ABOUT SECTION */
-    .about-section {
-      padding: 100px 48px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-    }
-
-    .about-left .section-label { margin-bottom: 12px; }
-
-    .about-left .section-title { margin-bottom: 28px; }
-
-    .about-left p {
-      font-size: 16px;
-      color: var(--grey-700);
-      line-height: 1.75;
-      font-weight: 300;
-      margin-bottom: 20px;
-    }
-
-    .about-left p:last-of-type { margin-bottom: 0; }
-
-    .about-right {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    .about-card {
-      background: var(--grey-100);
-      border-left: 3px solid var(--orange);
-      padding: 24px 28px;
-      border-radius: 0 6px 6px 0;
-    }
-
-    .about-card-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--black);
-      margin-bottom: 8px;
-    }
-
-    .about-card p {
-      font-size: 14px;
-      color: var(--grey-700);
-      line-height: 1.6;
-      font-weight: 300;
-    }
-
-    .founder-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 32px;
-      padding: 14px 20px;
-      background: var(--black);
-      border-radius: 6px;
-    }
-
-    .founder-avatar {
-      width: 36px;
-      height: 36px;
-      background: var(--orange);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 14px;
-      color: var(--white);
-    }
-
-    .founder-info { display: flex; flex-direction: column; gap: 2px; }
-
-    .founder-name {
-      font-family: 'Syne', sans-serif;
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--white);
-    }
-
-    .founder-role {
-      font-size: 12px;
-      color: #888;
-      font-weight: 300;
-    }
-
-    @media (max-width: 768px) {
-      .about-section { padding: 72px 24px; }
-      .about-grid { grid-template-columns: 1fr; gap: 48px; }
-    }
-
-    /* DISCLAIMER */
-    .portfolio-disclaimer-inline {
-      text-align: center;
-      font-size: 11px;
-      color: var(--grey-400);
-      margin-top: 12px;
-      letter-spacing: 0.5px;
-      font-style: italic;
-    }
-
-    .disclaimer-bar {
-      background: var(--grey-100);
-      border-top: 1px solid var(--grey-200);
-      padding: 24px 48px;
-    }
-
-    .disclaimer-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .disclaimer-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--grey-700);
-      margin-bottom: 8px;
-    }
-
-    .disclaimer-inner p:last-child {
-      font-size: 12px;
-      color: var(--grey-400);
-      line-height: 1.7;
-      font-weight: 300;
-    }
-
-    /* SUCCESS MESSAGE */
-    .success-msg {
-      display: none;
-      background: #1a1a1a;
-      border: 1.5px solid var(--orange);
-      border-radius: 8px;
-      padding: 24px;
-      text-align: center;
-      color: var(--white);
-      font-size: 15px;
-      margin-top: 16px;
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
-      nav { padding: 16px 24px; }
-      .hero { padding: 120px 24px 80px; }
-      .section { padding: 72px 24px; }
-      .stats-bar { padding: 24px; }
-      .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
-      .steps-grid { grid-template-columns: 1fr 1fr; }
-      .form-grid { grid-template-columns: 1fr; }
-      .how-section { padding: 72px 24px; }
-      .quote-section { padding: 72px 24px; }
-      footer { padding: 36px 24px; }
-    }
-
-    @media (max-width: 480px) {
-      .portfolio-grid { grid-template-columns: 1fr 1fr; }
-      .steps-grid { grid-template-columns: 1fr; }
-      nav .nav-links { display: none; }
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Skushy — Custom 3D Printing</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--or:#F97316;--or2:#EA6C0A;--ord:rgba(249,115,22,0.12);--orb:rgba(249,115,22,0.25);--bg:#070707;--bg2:#0c0c0c;--t:#f0ece0;--t2:rgba(240,236,224,0.42);--t3:rgba(240,236,224,0.2);--b:rgba(240,236,224,0.07);}
+html,body{min-height:100vh;background:var(--bg);color:var(--t);font-family:'DM Sans',sans-serif;}
+
+/* ── TOP BAR ── */
+.top{position:sticky;top:0;z-index:200;background:rgba(7,7,7,0.97);backdrop-filter:blur(16px);border-bottom:.5px solid var(--b);}
+.row1{display:flex;align-items:center;gap:12px;padding:10px 18px;}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:19px;letter-spacing:-.5px;color:var(--t);flex-shrink:0;}
+.logo-dot{color:var(--or);}
+.spacer{flex:1;}
+.lang{display:flex;align-items:center;gap:2px;background:rgba(240,236,224,.04);border:.5px solid var(--b);border-radius:7px;padding:3px;flex-shrink:0;}
+.lb{padding:3px 10px;border-radius:5px;font-size:11px;font-weight:500;cursor:pointer;color:var(--t3);transition:all .15s;user-select:none;}
+.lb.on{background:var(--or);color:#fff;}
+.acts{display:flex;align-items:center;gap:7px;flex-shrink:0;}
+.login-btn{display:flex;align-items:center;gap:5px;padding:6px 12px;border:.5px solid var(--b);border-radius:7px;font-size:12px;color:var(--t2);cursor:pointer;white-space:nowrap;transition:all .2s;}
+.login-btn:hover{border-color:rgba(240,236,224,.25);color:var(--t);}
+.cart-btn{display:flex;align-items:center;gap:5px;padding:6px 12px;background:var(--or);border-radius:7px;font-size:12px;color:#fff;font-weight:500;cursor:pointer;white-space:nowrap;transition:background .2s;}
+.cart-btn:hover{background:var(--or2);}
+.cart-n{background:#fff;color:var(--or);border-radius:50%;width:15px;height:15px;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+
+/* ── NAV ── */
+.nav{display:flex;align-items:stretch;padding:0 18px;border-top:.5px solid rgba(240,236,224,.04);overflow-x:auto;scrollbar-width:none;position:relative;}
+.nav::-webkit-scrollbar{display:none;}
+.ni{position:relative;flex-shrink:0;}
+.nl{display:flex;align-items:center;gap:4px;padding:9px 12px;font-size:12px;color:var(--t2);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .18s;user-select:none;}
+.nl.on{color:var(--t);border-bottom-color:var(--or);}
+.nl.open{color:var(--t);border-bottom-color:rgba(249,115,22,.4);}
+.chev{font-size:8px;opacity:.4;transition:transform .2s;display:inline-block;}
+.chev.open{transform:rotate(180deg);}
+.ndiv{width:.5px;background:var(--b);margin:8px 4px;}
+.soon{font-size:8px;background:var(--ord);color:var(--or);border:.5px solid var(--orb);border-radius:4px;padding:1px 5px;}
+.newb{font-size:8px;background:rgba(34,197,94,.1);color:#22c55e;border:.5px solid rgba(34,197,94,.2);border-radius:4px;padding:1px 5px;}
+.freeb{font-size:8px;background:var(--ord);color:var(--or);border:.5px solid var(--orb);border-radius:4px;padding:1px 6px;margin-left:3px;}
+.dd{position:absolute;top:calc(100% + 1px);left:0;min-width:220px;background:#111;border:.5px solid rgba(240,236,224,.1);border-radius:10px;padding:7px;z-index:500;box-shadow:0 20px 50px rgba(0,0,0,.85);display:none;}
+.dd.open{display:block;}
+.dd.r{left:auto;right:0;}
+.ddl{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);padding:5px 9px 3px;}
+.ddi{display:flex;align-items:center;justify-content:space-between;padding:7px 9px;border-radius:7px;cursor:pointer;transition:background .15s;}
+.ddi:hover{background:rgba(240,236,224,.05);}
+.ddil{display:flex;align-items:center;gap:8px;}
+.ic{width:26px;height:26px;border-radius:6px;background:var(--ord);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--or);flex-shrink:0;}
+.ic.bl{background:rgba(96,165,250,.08);color:#60a5fa;}
+.ic.gr{background:rgba(34,197,94,.08);color:#22c55e;}
+.ic.pu{background:rgba(167,139,250,.08);color:#a78bfa;}
+.dn{font-size:12px;color:var(--t);font-weight:500;}
+.ds{font-size:10px;color:var(--t2);margin-top:1px;}
+.sep{height:.5px;background:var(--b);margin:5px 0;}
+
+/* ── HERO ── */
+.hero{min-height:820px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:40px 24px 32px;text-align:center;position:relative;overflow:hidden;}
+.glow{position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:280px;background:radial-gradient(ellipse,rgba(249,115,22,.07) 0%,transparent 70%);pointer-events:none;}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--or);border:.5px solid var(--orb);border-radius:100px;padding:5px 14px;margin-bottom:14px;}
+.bdt{width:5px;height:5px;border-radius:50%;background:var(--or);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.2;}}
+.h1{font-family:'Syne',sans-serif;font-size:52px;font-weight:800;line-height:1.03;letter-spacing:-2.5px;color:var(--t);margin-bottom:12px;}
+.h1 em{font-style:normal;color:var(--or);}
+.sub{font-size:15px;color:var(--t2);max-width:400px;line-height:1.7;font-weight:300;margin-bottom:20px;}
+.bp{padding:11px 28px;background:var(--or);color:#fff;border-radius:100px;font-size:13px;font-weight:500;cursor:pointer;display:inline-block;transition:background .2s;}
+.bp:hover{background:var(--or2);}
+.pw{width:100%;max-width:440px;margin-bottom:4px;}
+.pl{display:flex;justify-content:space-between;margin-bottom:5px;}
+.pt{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:rgba(249,115,22,.6);}
+.pp{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--or);}
+.pb{width:100%;height:2px;background:rgba(249,115,22,.1);border-radius:1px;overflow:hidden;}
+.pf{height:100%;background:var(--or);border-radius:1px;width:0%;transition:width .05s;}
+.scene{width:440px;max-width:100%;height:280px;margin:0 auto;}
+.dr{opacity:0;transform:translateY(10px);transition:opacity .5s,transform .5s;margin-top:14px;display:flex;flex-direction:column;align-items:center;gap:10px;}
+.dr.show{opacity:1;transform:translateY(0);}
+.dtag{display:inline-flex;align-items:center;gap:6px;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#22c55e;border:.5px solid rgba(34,197,94,.3);border-radius:100px;padding:5px 14px;}
+.dcta{padding:11px 28px;background:var(--or);color:#fff;border-radius:100px;font-size:13px;font-weight:500;cursor:pointer;animation:ctap 2.5s infinite;}
+@keyframes ctap{0%,100%{box-shadow:0 0 0 0 rgba(249,115,22,.35);}50%{box-shadow:0 0 0 10px rgba(249,115,22,0);}}
+.stat-s{display:flex;align-items:center;gap:7px;margin-top:7px;}
+.std{width:6px;height:6px;border-radius:50%;background:#22c55e;animation:blink .8s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.15;}}
+.stxt{font-size:11px;color:var(--t2);}
+.sval{font-size:11px;color:var(--or);font-weight:500;}
+.sh{font-size:11px;color:var(--t3);letter-spacing:.09em;text-transform:uppercase;display:flex;align-items:center;gap:7px;margin-top:8px;transition:opacity .3s;}
+.sha{width:18px;height:18px;border:.5px solid rgba(240,236,224,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;animation:bob 1.6s infinite;}
+@keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(3px);}}
+
+/* ── STATS ── */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--b);margin:0 24px;}
+.stat{padding:22px 16px;background:var(--bg2);text-align:center;}
+.sn{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--or);letter-spacing:-1px;}
+.sl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-top:3px;}
+.mat-banner{margin:1px 24px 0;background:var(--bg2);border-top:.5px solid var(--b);padding:16px 20px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.mat-lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-right:4px;flex-shrink:0;}
+.mat-tag{font-size:11px;padding:3px 10px;background:var(--ord);color:var(--or);border:.5px solid var(--orb);border-radius:100px;font-weight:500;white-space:nowrap;}
+.mat-tag.dim{background:rgba(240,236,224,.04);color:var(--t2);border-color:var(--b);}
+
+/* ── HOW IT WORKS ── */
+.sec{padding:56px 24px;}
+.sec-lbl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--or);margin-bottom:10px;}
+.sec-title{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;letter-spacing:-1px;color:var(--t);margin-bottom:28px;line-height:1.15;}
+.hiw-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--b);border-radius:14px;overflow:hidden;}
+.hiw-card{background:var(--bg2);padding:24px 20px 26px;display:flex;flex-direction:column;position:relative;}
+.card-n{position:absolute;top:16px;right:16px;font-family:'Syne',sans-serif;font-size:36px;font-weight:800;color:rgba(249,115,22,.07);line-height:1;}
+.card-ic{width:28px;height:28px;border:.5px solid var(--orb);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--or);font-size:13px;margin-bottom:14px;}
+.anim-box{width:100%;height:110px;margin-bottom:16px;overflow:hidden;}
+.anim-box svg{width:100%;height:100%;}
+.step-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--t);margin-bottom:5px;}
+.step-desc{font-size:12px;color:var(--t2);line-height:1.6;}
+
+/* ── SHIPPING ── */
+.ship-sec{padding:0 24px 56px;}
+.ship-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--b);border-radius:12px;overflow:hidden;}
+.ship-card{padding:20px 14px;background:var(--bg2);text-align:center;}
+.ship-flag{font-size:22px;margin-bottom:8px;}
+.ship-country{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--t);margin-bottom:4px;}
+.ship-info{font-size:10px;color:var(--t2);line-height:1.6;}
+.ship-time{font-size:11px;color:var(--or);font-weight:500;margin-top:6px;}
+
+/* ── CTA ── */
+.cta{margin:0 24px 56px;border-radius:16px;background:#0e0b07;border:.5px solid var(--orb);padding:52px 32px;text-align:center;position:relative;overflow:hidden;}
+.cta::before{content:'';position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:320px;height:180px;background:radial-gradient(ellipse,rgba(249,115,22,.09) 0%,transparent 70%);}
+.cta-t{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;letter-spacing:-1.2px;color:var(--t);margin-bottom:12px;position:relative;}
+.cta-s{font-size:14px;color:var(--t2);margin-bottom:26px;position:relative;line-height:1.7;}
+
+/* ── FOOTER ── */
+.footer{padding:24px;border-top:.5px solid var(--b);display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:20px;}
+.f-logo{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--t);}
+.f-logo span{color:var(--or);}
+.f-tagline{font-size:12px;color:var(--t3);margin-top:6px;}
+.f-icons{display:flex;gap:12px;margin-top:14px;}
+.f-icon{font-size:19px;color:var(--t3);cursor:pointer;transition:color .2s;}
+.f-icon:hover{color:var(--or);}
+.f-col h4{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:10px;}
+.f-col a{display:block;font-size:12px;color:var(--t2);margin-bottom:6px;cursor:pointer;text-decoration:none;transition:color .15s;}
+.f-col a:hover{color:var(--or);}
+.f-btm{padding:14px 24px;border-top:.5px solid var(--b);display:flex;justify-content:space-between;align-items:center;}
+.f-copy{font-size:11px;color:var(--t3);}
+.f-langs{display:flex;gap:8px;font-size:11px;}
+.f-lang{cursor:pointer;color:var(--t3);transition:color .15s;}
+.f-lang:hover{color:var(--or);}
+
+/* ── STEP ANIMATIONS ── */
+/* Step 1 — upload */
+#s1-fig{animation:s1walk 4.2s ease-in-out infinite;}
+@keyframes s1walk{0%,3%{transform:translateX(0);}45%{transform:translateX(72px);}82%{transform:translateX(72px);}96%,100%{transform:translateX(0);}}
+#s1-ll{transform-origin:18px 64px;animation:s1ll .45s ease-in-out infinite alternate;}
+#s1-lr{transform-origin:18px 64px;animation:s1lr .45s ease-in-out infinite alternate;}
+@keyframes s1ll{from{transform:rotate(-10deg);}to{transform:rotate(10deg);}}
+@keyframes s1lr{from{transform:rotate(10deg);}to{transform:rotate(-10deg);}}
+#s1-al{transform-origin:18px 51px;animation:s1al .45s ease-in-out infinite alternate;}
+@keyframes s1al{from{transform:rotate(-8deg);}to{transform:rotate(8deg);}}
+#s1-file{animation:s1file 4.2s ease-in-out infinite;}
+@keyframes s1file{0%,42%{transform:translate(0,0);opacity:1;}54%{transform:translate(24px,-26px);opacity:0;}82%,100%{opacity:0;transform:translate(0,0);}}
+#s1-uparrow{animation:s1arr 4.2s ease-in-out infinite;}
+@keyframes s1arr{0%,46%{opacity:0;transform:translateY(4px);}52%,60%{opacity:1;transform:translateY(-4px);}66%,100%{opacity:0;transform:translateY(-8px);}}
+#s1-scrn{animation:s1scrn 4.2s ease-in-out infinite;}
+@keyframes s1scrn{0%,48%{fill:#111;}54%,72%{fill:rgba(249,115,22,.18);}80%,100%{fill:#111;}}
+#s1-check{stroke-dasharray:20;stroke-dashoffset:20;animation:s1chk 4.2s ease-in-out infinite;}
+@keyframes s1chk{0%,58%{stroke-dashoffset:20;opacity:0;}66%,76%{stroke-dashoffset:0;opacity:1;}84%,100%{opacity:0;}}
+/* Step 2 — prep */
+#s2-figgrp{animation:s2figwalk 5s ease-in-out infinite;}
+@keyframes s2figwalk{0%,5%{transform:translateX(0);}15%{transform:translateX(0);}50%{transform:translateX(82px);}72%{transform:translateX(82px);}85%,100%{transform:translateX(0);}}
+#s2-logocard{animation:s2logocard 5s ease-in-out infinite;}
+@keyframes s2logocard{0%,12%{transform:translate(0,0);opacity:1;}14%{transform:translate(0,-14px);opacity:1;}50%{transform:translate(82px,-14px);opacity:1;}57%{transform:translate(82px,-14px);opacity:0;}85%,100%{transform:translate(0,0);opacity:0;}}
+#s2-pscreen{animation:s2pscreen 5s ease-in-out infinite;}
+@keyframes s2pscreen{0%,50%{fill:#071007;}57%,75%{fill:rgba(249,115,22,.25);}82%,100%{fill:#071007;}}
+#s2-nozzle{animation:s2noz 5s ease-in-out infinite;}
+@keyframes s2noz{0%,55%{transform:translateX(0);}60%,62%{transform:translateX(-8px);}64%,66%{transform:translateX(8px);}68%,70%{transform:translateX(-8px);}72%,74%{transform:translateX(6px);}76%,78%{transform:translateX(-4px);}80%,100%{transform:translateX(0);}}
+#s2-nozzledot{animation:s2glow 5s ease-in-out infinite;}
+@keyframes s2glow{0%,55%{opacity:.2;}57%,80%{opacity:1;}85%,100%{opacity:.2;}}
+#s2-spool{transform-origin:133px 52px;animation:s2spool 1.5s linear infinite;}
+@keyframes s2spool{from{transform:rotate(0);}to{transform:rotate(360deg);}}
+#s2-figll{transform-origin:34px 64px;animation:s2ll .45s ease-in-out infinite alternate;}
+#s2-figlr{transform-origin:34px 64px;animation:s2lr .45s ease-in-out infinite alternate;}
+@keyframes s2ll{from{transform:rotate(-10deg);}to{transform:rotate(10deg);}}
+@keyframes s2lr{from{transform:rotate(10deg);}to{transform:rotate(-10deg);}}
+#s2-prodcheck{animation:s2check 5s ease-in-out infinite;}
+@keyframes s2check{0%,74%{opacity:0;}78%,88%{opacity:1;}93%,100%{opacity:0;}}
+/* Step 3 — approve */
+#s3-env{animation:s3fly 3.5s ease-in-out infinite;}
+@keyframes s3fly{0%,5%{transform:translateX(-5px);opacity:0;}12%{opacity:1;transform:translateX(-5px);}55%{transform:translateX(88px);opacity:1;}62%,100%{transform:translateX(88px);opacity:0;}}
+#s3-custarm{transform-origin:170px 42px;animation:s3carm 3.5s ease-in-out infinite;}
+@keyframes s3carm{0%,55%{transform:rotate(0);}65%,80%{transform:rotate(-48deg);}90%,100%{transform:rotate(0);}}
+#s3-thumb{animation:s3thumb 3.5s ease-in-out infinite;}
+@keyframes s3thumb{0%,60%{opacity:0;transform:scale(0);}70%,85%{opacity:1;transform:scale(1);}95%,100%{opacity:0;transform:scale(0);}}
+#s3-sarm{transform-origin:29px 42px;animation:s3sarm .8s ease-in-out infinite alternate;}
+@keyframes s3sarm{from{transform:rotate(-10deg);}to{transform:rotate(10deg);}}
+#s3-laptop{animation:s3lap 3.5s ease-in-out infinite;}
+@keyframes s3lap{0%,8%{fill:rgba(249,115,22,.4);}15%,40%{fill:rgba(249,115,22,.1);}42%{fill:rgba(249,115,22,.6);}50%,100%{fill:rgba(249,115,22,.1);}}
+#s3-envcheck{animation:s3chk 3.5s ease-in-out infinite;}
+@keyframes s3chk{0%,56%{opacity:0;}62%,78%{opacity:1;}84%,100%{opacity:0;}}
+/* Step 4 — delivery */
+#s4-truck{animation:s4truck 5s ease-in-out infinite;}
+@keyframes s4truck{0%,2%{transform:translateX(115px);}38%{transform:translateX(0);}60%{transform:translateX(0);}100%{transform:translateX(-135px);}}
+#s4-w1{transform-origin:76px 76px;animation:s4wheel .55s linear infinite;}
+#s4-w2{transform-origin:132px 76px;animation:s4wheel .55s linear infinite;}
+@keyframes s4wheel{from{transform:rotate(0);}to{transform:rotate(360deg);}}
+#s4-box{animation:s4box 5s ease-in-out infinite;}
+@keyframes s4box{0%,38%{transform:translate(0,0);opacity:1;}46%,100%{transform:translate(-40px,12px);opacity:1;}}
+#s4-carm{transform-origin:20px 47px;animation:s4carm 5s ease-in-out infinite;}
+@keyframes s4carm{0%,44%{transform:rotate(0);}52%,68%{transform:rotate(-44deg);}76%,100%{transform:rotate(0);}}
+#s4-thumb{animation:s4thumb 5s ease-in-out infinite;}
+@keyframes s4thumb{0%,62%{opacity:0;transform:translateY(6px) scale(0);}70%,90%{opacity:1;transform:translateY(0) scale(1);}97%,100%{opacity:0;transform:scale(0);}}
+#s4-smoke1{animation:s4smoke .8s ease-out infinite;}
+#s4-smoke2{animation:s4smoke .8s ease-out .27s infinite;}
+#s4-smoke3{animation:s4smoke .8s ease-out .54s infinite;}
+@keyframes s4smoke{0%{transform:translate(0,0);opacity:.4;}100%{transform:translate(10px,-12px);opacity:0;}}
+</style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav>
-    <a href="#" class="nav-logo">Skushy<span>.</span></a>
-    <div class="nav-links">
-      <a href="#work" class="nav-link">Our Work</a>
-      <a href="#how" class="nav-link">How It Works</a>
-      <a href="#about" class="nav-link">About</a>
-      <a href="#quote" class="nav-link nav-cta">Get a Quote</a>
+<!-- ══════ TOP BAR ══════ -->
+<div class="top">
+  <div class="row1">
+    <div class="logo">Skushy<span class="logo-dot">.</span></div>
+    <div class="spacer"></div>
+    <div class="lang">
+      <div class="lb on" id="btn-en">EN</div>
+      <div class="lb" id="btn-nl">NL</div>
+    </div>
+    <div class="acts">
+      <div class="login-btn"><i class="ti ti-user"></i><span id="t-login">Log in</span></div>
+      <div class="cart-btn"><i class="ti ti-shopping-cart"></i><span id="t-cart">Cart</span><div class="cart-n">0</div></div>
+    </div>
+  </div>
+  <nav class="nav">
+    <div class="ni"><div class="nl on" data-nav="home"><i class="ti ti-home" style="font-size:13px;"></i>&nbsp;<span id="t-home">Home</span></div></div>
+    <div class="ni">
+      <div class="nl" data-nav="products"><span id="t-products">Products</span>&nbsp;<span class="chev" id="chev-products">▾</span></div>
+      <div class="dd" id="dd-products">
+        <div class="ddl">Decoration & Gifts</div>
+        <div class="ddi"><div class="ddil"><div class="ic"><i class="ti ti-plant"></i></div><div><div class="dn">Vases & Planters</div><div class="ds">Decorative 3D printed vases</div></div></div></div>
+        <div class="ddi"><div class="ddil"><div class="ic"><i class="ti ti-gift"></i></div><div><div class="dn">Birthday Products</div><div class="ds">Cake toppers, frames, figurines</div></div></div></div>
+        <div class="ddi"><div class="ddil"><div class="ic"><i class="ti ti-rotate-clockwise"></i></div><div><div class="dn">Fidgets & Spinners</div><div class="ds">Sensory & desk fidget toys</div></div></div></div>
+        <div class="ddi"><div class="ddil"><div class="ic"><i class="ti ti-lamp"></i></div><div><div class="dn">Home Decor</div><div class="ds">Shelves, holders, decorations</div></div></div></div>
+        <div class="sep"></div>
+        <div class="ddi"><div class="ddil"><div class="ic"><i class="ti ti-package"></i></div><div><div class="dn">Wholesale</div><div class="ds">For shops & resellers</div></div></div></div>
+      </div>
+    </div>
+    <div class="ni">
+      <div class="nl" data-nav="custom"><span id="t-custom">Custom Design</span>&nbsp;<span class="chev" id="chev-custom">▾</span></div>
+      <div class="dd" id="dd-custom">
+        <div class="ddl">Branded products</div>
+        <div class="ddi"><div class="ddil"><div class="ic gr"><i class="ti ti-key"></i></div><div><div class="dn">Branded Keychain</div><div class="ds">Your logo on a keychain</div></div></div></div>
+        <div class="ddi"><div class="ddil"><div class="ic gr"><i class="ti ti-plant"></i></div><div><div class="dn">Branded Vase</div><div class="ds">Logo on decorative vase</div></div></div></div>
+        <div class="ddi"><div class="ddil"><div class="ic gr"><i class="ti ti-badge"></i></div><div><div class="dn">Name Badge</div><div class="ds">Events, fairs & corporate</div></div></div></div>
+        <div class="sep"></div>
+        <div class="ddl">Bring your file</div>
+        <div class="ddi"><div class="ddil"><div class="ic gr"><i class="ti ti-upload"></i></div><div><div class="dn">Upload STL / 3MF</div><div class="ds">Your file → price quote</div></div></div></div>
+        <div class="ddi"><div class="ddil"><div class="ic gr"><i class="ti ti-scan"></i></div><div><div class="dn">3D Scan & Model</div><div class="ds">We scan & design for you</div></div></div><div class="newb">New</div></div>
+        <div class="ddi"><div class="ddil"><div class="ic gr"><i class="ti ti-color-swatch"></i></div><div><div class="dn">Material & Color</div><div class="ds">PLA, PETG, TPU, ABS, multi-color</div></div></div></div>
+      </div>
+    </div>
+    <div class="ni"><div class="nl" data-nav="free"><i class="ti ti-gift" style="font-size:13px;color:var(--or);"></i>&nbsp;<span id="t-free">Free Sample</span><span class="freeb">Free</span></div></div>
+    <div class="ndiv"></div>
+    <div class="ni">
+      <div class="nl" data-nav="about"><span id="t-about">About</span>&nbsp;<span class="chev" id="chev-about">▾</span></div>
+      <div class="dd r" id="dd-about">
+        <div class="ddi"><div class="ddil"><div class="ic pu"><i class="ti ti-building"></i></div><div><div class="dn">About us</div><div class="ds">Our story & mission</div></div></div></div>
+        <div class="ddi"><div class="ddil"><div class="ic pu"><i class="ti ti-mail"></i></div><div><div class="dn">Contact</div><div class="ds">Get in touch</div></div></div></div>
+        <div class="ddi"><div class="ddil"><div class="ic pu"><i class="ti ti-help-circle"></i></div><div><div class="dn">FAQ</div><div class="ds">Common questions</div></div></div></div>
+        <div class="ddi"><div class="ddil"><div class="ic pu"><i class="ti ti-truck"></i></div><div><div class="dn">Shipping & Returns</div><div class="ds">BE · NL · FR · DE</div></div></div></div>
+        <div class="ddi"><div class="ddil"><div class="ic pu"><i class="ti ti-shield"></i></div><div><div class="dn">Privacy & Terms</div></div></div></div>
+      </div>
+    </div>
+    <div class="ni">
+      <div class="nl" data-nav="supply">3D Supply&nbsp;<span class="chev" id="chev-supply">▾</span></div>
+      <div class="dd r" id="dd-supply" style="min-width:240px;">
+        <div class="ddl">Materials</div>
+        <div class="ddi"><div class="ddil"><div class="ic bl"><i class="ti ti-cylinder"></i></div><div><div class="dn">Filament</div><div class="ds">PLA, PETG, TPU, ABS, ASA, Nylon</div></div></div></div>
+        <div class="ddi"><div class="ddil"><div class="ic bl"><i class="ti ti-droplet"></i></div><div><div class="dn">Resin</div><div class="ds">Standard, ABS-like, flexible</div></div></div><div class="soon">Soon</div></div>
+        <div class="sep"></div>
+        <div class="ddl">Printer parts</div>
+        <div class="ddi"><div class="ddil"><div class="ic bl"><i class="ti ti-circle-dot"></i></div><div><div class="dn">Nozzles</div><div class="ds">Brass, hardened steel, 0.2–1.0mm</div></div></div></div>
+        <div class="ddi"><div class="ddil"><div class="ic bl"><i class="ti ti-stack-2"></i></div><div><div class="dn">Build Plates</div><div class="ds">PEI spring steel, glass, textured</div></div></div></div>
+        <div class="ddi"><div class="ddil"><div class="ic bl"><i class="ti ti-flame"></i></div><div><div class="dn">Hotends & Extruders</div></div></div></div>
+        <div class="sep"></div>
+        <div class="ddi"><div class="ddil"><div class="ic bl"><i class="ti ti-tool"></i></div><div><div class="dn">Tool Kits</div></div></div></div>
+        <div class="ddi"><div class="ddil"><div class="ic bl"><i class="ti ti-wind"></i></div><div><div class="dn">Filament Dryer</div></div></div></div>
+        <div class="ddi"><div class="ddil"><div class="ic bl"><i class="ti ti-printer"></i></div><div><div class="dn">3D Printers</div><div class="ds">Bambu, Creality, Prusa</div></div></div><div class="soon">Soon</div></div>
+      </div>
     </div>
   </nav>
+</div>
 
-  <!-- HERO -->
-  <section class="hero">
-    <span class="hero-label">Custom 3D Printed Keychains</span>
-    <h1>Your brand,<br>in <em>3D.</em></h1>
-    <p>We turn your logo into a high-quality 3D printed keychain. Fast turnaround, competitive pricing, and no minimum order.</p>
-    <div class="hero-actions">
-      <a href="#quote" class="btn-primary">Request a Quote</a>
-      <a href="#work" class="btn-secondary">See our work</a>
+<!-- ══════ HERO ══════ -->
+<section class="hero">
+  <div class="glow"></div>
+  <div class="badge"><div class="bdt"></div>Custom 3D printing · BE · NL · FR · DE</div>
+  <h1 class="h1">Your brand,<br>printed in <em>3D.</em></h1>
+  <p class="sub">Keychains, vases, name badges and more — with your logo. Scroll to watch it being printed.</p>
+  <div style="margin-bottom:20px;"><div class="bp">Request a quote</div></div>
+  <div class="pw">
+    <div class="pl"><span class="pt" id="statusTxt">Scroll to start printing...</span><span class="pp" id="pctTxt">0%</span></div>
+    <div class="pb"><div class="pf" id="progFill"></div></div>
+  </div>
+  <div class="scene">
+    <svg width="440" height="280" viewBox="0 0 400 270" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bG" x1="90" y1="215" x2="310" y2="245" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#1e1e1e"/><stop offset="100%" stop-color="#141414"/></linearGradient>
+        <linearGradient id="kG" x1="155" y1="145" x2="245" y2="230" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f5f5f5"/><stop offset="100%" stop-color="#e0e0e0"/></linearGradient>
+        <filter id="hF"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="sF"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <clipPath id="kC"><rect id="clipRect" x="148" y="228" width="104" height="0"/></clipPath>
+        <clipPath id="lC"><rect id="logoCR" x="155" y="228" width="90" height="0"/></clipPath>
+      </defs>
+      <rect x="68" y="16" width="11" height="218" rx="3.5" fill="#1a1a1a" stroke="#252525" stroke-width="0.5"/>
+      <rect x="321" y="16" width="11" height="218" rx="3.5" fill="#1a1a1a" stroke="#252525" stroke-width="0.5"/>
+      <rect x="62" y="12" width="276" height="13" rx="4.5" fill="#1f1f1f" stroke="#2e2e2e" stroke-width="0.5"/>
+      <rect x="44" y="26" width="27" height="182" rx="4.5" fill="#121212" stroke="#1e1e1e" stroke-width="0.5"/>
+      <rect x="48" y="84" width="19" height="13" rx="2" fill="#071007" stroke="#142014" stroke-width="0.5"/>
+      <text x="57" y="93" text-anchor="middle" font-family="monospace" font-size="5" fill="#22c55e" id="screenTxt">IDLE</text>
+      <rect x="78" y="216" width="244" height="13" rx="3" fill="url(#bG)" stroke="#252525" stroke-width="0.5"/>
+      <line x1="108" y1="216" x2="108" y2="229" stroke="#1c1c1c" stroke-width="0.5"/>
+      <line x1="138" y1="216" x2="138" y2="229" stroke="#1c1c1c" stroke-width="0.5"/>
+      <line x1="168" y1="216" x2="168" y2="229" stroke="#1c1c1c" stroke-width="0.5"/>
+      <line x1="198" y1="216" x2="198" y2="229" stroke="#1c1c1c" stroke-width="0.5"/>
+      <line x1="228" y1="216" x2="228" y2="229" stroke="#1c1c1c" stroke-width="0.5"/>
+      <line x1="258" y1="216" x2="258" y2="229" stroke="#1c1c1c" stroke-width="0.5"/>
+      <line x1="288" y1="216" x2="288" y2="229" stroke="#1c1c1c" stroke-width="0.5"/>
+      <rect x="88" y="229" width="8" height="15" rx="1.5" fill="#0e0e0e"/>
+      <rect x="304" y="229" width="8" height="15" rx="1.5" fill="#0e0e0e"/>
+      <rect x="72" y="94" width="256" height="7" rx="2.5" fill="#1c1c1c" stroke="#272727" stroke-width="0.5"/>
+      <g id="TH">
+        <rect x="181" y="82" width="38" height="46" rx="4.5" fill="#191919" stroke="#282828" stroke-width="0.5"/>
+        <circle cx="200" cy="97" r="10" fill="#121212" stroke="#222" stroke-width="0.5"/>
+        <path d="M200 89Q204 93 200 97Q196 93 200 89Z" fill="#1e1e1e"/>
+        <path d="M208 97Q204 101 200 97Q204 93 208 97Z" fill="#1e1e1e"/>
+        <path d="M200 105Q196 101 200 97Q204 101 200 105Z" fill="#1e1e1e"/>
+        <path d="M192 97Q196 93 200 97Q196 101 192 97Z" fill="#1e1e1e"/>
+        <circle cx="200" cy="97" r="2.5" fill="#191919" stroke="#2e2e2e" stroke-width="0.5"/>
+        <path d="M196 128 L198 136 L202 136 L204 128Z" fill="#2e2e2e"/>
+        <rect x="198" y="124" width="5" height="8" rx="1" fill="#252525"/>
+        <circle cx="200" cy="136" r="2.5" fill="#ff5500" id="nozzleGlow" opacity="0" filter="url(#hF)"/>
+        <line x1="200" y1="136" x2="200" y2="138" stroke="#F97316" stroke-width="1.5" id="filLine" opacity="0"/>
+      </g>
+      <g clip-path="url(#kC)">
+        <rect x="155" y="145" width="90" height="75" rx="11" fill="url(#kG)"/>
+        <line x1="155" y1="156" x2="245" y2="156" stroke="rgba(0,0,0,0.06)" stroke-width="0.8"/>
+        <line x1="155" y1="164" x2="245" y2="164" stroke="rgba(0,0,0,0.06)" stroke-width="0.8"/>
+        <line x1="155" y1="172" x2="245" y2="172" stroke="rgba(0,0,0,0.06)" stroke-width="0.8"/>
+        <line x1="155" y1="180" x2="245" y2="180" stroke="rgba(0,0,0,0.06)" stroke-width="0.8"/>
+        <line x1="155" y1="188" x2="245" y2="188" stroke="rgba(0,0,0,0.06)" stroke-width="0.8"/>
+        <line x1="155" y1="196" x2="245" y2="196" stroke="rgba(0,0,0,0.06)" stroke-width="0.8"/>
+        <line x1="155" y1="204" x2="245" y2="204" stroke="rgba(0,0,0,0.06)" stroke-width="0.8"/>
+        <line x1="155" y1="212" x2="245" y2="212" stroke="rgba(0,0,0,0.06)" stroke-width="0.8"/>
+        <rect x="155" y="145" width="90" height="75" rx="11" fill="none" stroke="rgba(0,0,0,0.12)" stroke-width="1"/>
+      </g>
+      <g clip-path="url(#lC)">
+        <text x="191" y="202" font-family="'Syne',Arial Black,sans-serif" font-size="52" font-weight="800" fill="#0d0d0d" letter-spacing="-2">S</text>
+        <circle cx="224" cy="202" r="6" fill="#F97316"/>
+      </g>
+      <g id="kcRing" opacity="0">
+        <path d="M195 145 L195 134 Q195 126 200 126 Q205 126 205 134 L205 145" stroke="#888" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <circle cx="200" cy="125" r="7" fill="none" stroke="#aaa" stroke-width="3"/>
+      </g>
+      <ellipse cx="200" cy="216" rx="42" ry="4" fill="#ff4000" id="bedGlow" opacity="0" filter="url(#sF)"/>
+    </svg>
+  </div>
+  <div class="stat-s">
+    <div class="std" id="statusDot"></div>
+    <span class="stxt" id="statusLine">Printer ready · </span>
+    <span class="sval" id="statusVal">Idle</span>
+  </div>
+  <div class="sh" id="scrollHint">
+    <div class="sha"><svg width="7" height="7" viewBox="0 0 7 7"><path d="M3.5 1v5M1 4l2.5 2.5L6 4" stroke="rgba(240,236,224,0.3)" stroke-width="1" stroke-linecap="round"/></svg></div>
+    Scroll to start printing
+  </div>
+  <div class="dr" id="doneReveal">
+    <div class="dtag"><svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" stroke="#22c55e" stroke-width="1.2" fill="none"/><path d="M3 5l1.5 1.5L7 3.5" stroke="#22c55e" stroke-width="1.2" stroke-linecap="round"/></svg> Print complete — your product is ready</div>
+    <div class="dcta">Order yours now →</div>
+  </div>
+</section>
+
+<!-- ══════ STATS ══════ -->
+<div class="stats">
+  <div class="stat"><div class="sn">48h</div><div class="sl">Turnaround</div></div>
+  <div class="stat"><div class="sn" style="font-size:13px;padding-top:5px;">PLA·PETG·TPU·ABS</div><div class="sl">Materials</div></div>
+  <div class="stat"><div class="sn">BE·NL·FR·DE</div><div class="sl">Shipping</div></div>
+</div>
+<div class="mat-banner">
+  <span class="mat-lbl">Printable with:</span>
+  <span class="mat-tag">PLA</span><span class="mat-tag">PETG</span><span class="mat-tag">TPU</span>
+  <span class="mat-tag">ABS</span><span class="mat-tag">ASA</span><span class="mat-tag">Nylon</span>
+  <span class="mat-tag">Wood-fill</span><span class="mat-tag">Silk PLA</span>
+  <span class="mat-tag dim">Resin · Soon</span>
+</div>
+
+<!-- ══════ HOW IT WORKS ══════ -->
+<section class="sec">
+  <div class="sec-lbl">How it works</div>
+  <div class="sec-title">Simple in 4 steps.</div>
+  <div class="hiw-grid">
+
+    <!-- Step 1 -->
+    <div class="hiw-card">
+      <span class="card-n">01</span>
+      <div class="card-ic"><i class="ti ti-upload"></i></div>
+      <div class="anim-box">
+        <svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+          <rect x="145" y="20" width="46" height="36" rx="3" fill="#161616" stroke="#2a2a2a" stroke-width="1"/>
+          <rect id="s1-scrn" x="148" y="23" width="40" height="26" rx="2" fill="#111"/>
+          <rect x="162" y="56" width="12" height="5" rx="1" fill="#1e1e1e"/>
+          <rect x="157" y="61" width="22" height="3" rx="1.5" fill="#1e1e1e"/>
+          <g id="s1-uparrow"><line x1="168" y1="43" x2="168" y2="32" stroke="#F97316" stroke-width="1.8" stroke-linecap="round"/><polyline points="163,36 168,31 173,36" stroke="#F97316" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></g>
+          <polyline id="s1-check" points="156,36 163,43 181,28" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0"/>
+          <g id="s1-fig">
+            <g id="s1-file"><rect x="9" y="5" width="15" height="18" rx="2" fill="#1e1e1e" stroke="#F97316" stroke-width="1.2"/><text x="16" y="17" text-anchor="middle" font-family="Syne,sans-serif" font-size="7" font-weight="800" fill="#f0ece0">S</text><circle cx="21" cy="16" r="2" fill="#F97316"/></g>
+            <circle cx="18" cy="38" r="7" fill="none" stroke="#f0ece0" stroke-width="1.8"/>
+            <line x1="18" y1="45" x2="18" y2="64" stroke="#f0ece0" stroke-width="1.8" stroke-linecap="round"/>
+            <line id="s1-al" x1="18" y1="51" x2="10" y2="58" stroke="#f0ece0" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="18" y1="51" x2="27" y2="44" stroke="#f0ece0" stroke-width="1.8" stroke-linecap="round"/>
+            <line id="s1-ll" x1="18" y1="64" x2="14" y2="80" stroke="#f0ece0" stroke-width="1.8" stroke-linecap="round"/>
+            <line id="s1-lr" x1="18" y1="64" x2="22" y2="80" stroke="#f0ece0" stroke-width="1.8" stroke-linecap="round"/>
+          </g>
+          <line x1="5" y1="87" x2="195" y2="87" stroke="rgba(240,236,224,0.07)" stroke-width="0.8"/>
+        </svg>
+      </div>
+      <div class="step-title">Send your idea</div>
+      <div class="step-desc">Logo, STL / 3MF file or a description — we handle the rest.</div>
     </div>
-  </section>
 
-  <!-- STATS -->
-  <div class="stats-bar">
-    <div class="stats-inner">
-      <div class="stat-item">
-        <span class="stat-number">48h</span>
-        <span class="stat-label">Average turnaround</span>
+    <!-- Step 2 -->
+    <div class="hiw-card">
+      <span class="card-n">02</span>
+      <div class="card-ic"><i class="ti ti-3d-cube-sphere"></i></div>
+      <div class="anim-box">
+        <svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+          <rect x="6" y="42" width="26" height="26" rx="5" fill="#1a1a1a" stroke="rgba(249,115,22,0.35)" stroke-width="1"/>
+          <text x="17" y="59" text-anchor="middle" font-family="Syne,sans-serif" font-size="13" font-weight="800" fill="#f0ece0">S</text>
+          <circle cx="25" cy="58" r="3" fill="#F97316"/>
+          <text x="19" y="74" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(240,236,224,0.3)">logo</text>
+          <line x1="34" y1="55" x2="110" y2="55" stroke="rgba(249,115,22,0.2)" stroke-width="1" stroke-dasharray="4 3"><animate attributeName="stroke-dashoffset" from="0" to="-14" dur="0.7s" repeatCount="indefinite"/></line>
+          <rect x="140" y="28" width="50" height="50" rx="4" fill="#161616" stroke="#2a2a2a" stroke-width="1"/>
+          <rect x="140" y="28" width="50" height="5" rx="2" fill="#1e1e1e"/>
+          <rect id="s2-pscreen" x="144" y="35" width="16" height="10" rx="2" fill="#071007"/>
+          <text x="152" y="42" text-anchor="middle" font-family="monospace" font-size="5" fill="#22c55e">RDY</text>
+          <rect x="142" y="50" width="46" height="3" rx="1" fill="#222"/>
+          <g id="s2-nozzle"><rect x="158" y="53" width="10" height="12" rx="2" fill="#1e1e1e"/><path d="M161 65 L160 70 L168 70 L167 65Z" fill="#2a2a2a"/><circle id="s2-nozzledot" cx="164" cy="70" r="2.5" fill="#F97316" opacity="0.3"/></g>
+          <rect x="142" y="70" width="46" height="5" rx="1" fill="#1a1a1a" stroke="#252525" stroke-width="0.5"/>
+          <circle cx="133" cy="52" r="10" fill="none" stroke="#2a2a2a" stroke-width="1.5"/>
+          <g id="s2-spool"><circle cx="133" cy="52" r="7" fill="none" stroke="#F97316" stroke-width="1.5" stroke-dasharray="5 3"/><circle cx="133" cy="52" r="2.5" fill="#1a1a1a"/></g>
+          <path d="M133 42 Q137 36 140 44" fill="none" stroke="#F97316" stroke-width="1" stroke-dasharray="3 2" opacity="0.6"/>
+          <g id="s2-figgrp">
+            <g id="s2-logocard"><rect x="26" y="16" width="16" height="18" rx="2" fill="#1e1e1e" stroke="#F97316" stroke-width="1.2"/><text x="34" y="28" text-anchor="middle" font-family="Syne,sans-serif" font-size="8" font-weight="800" fill="#f0ece0">S</text><circle cx="39" cy="27" r="2" fill="#F97316"/></g>
+            <circle cx="34" cy="40" r="7" fill="none" stroke="#f0ece0" stroke-width="1.8"/>
+            <line x1="34" y1="47" x2="34" y2="64" stroke="#f0ece0" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="34" y1="53" x2="25" y2="60" stroke="#f0ece0" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="34" y1="51" x2="42" y2="44" stroke="#f0ece0" stroke-width="1.8" stroke-linecap="round"/>
+            <line id="s2-figll" x1="34" y1="64" x2="30" y2="80" stroke="#f0ece0" stroke-width="1.8" stroke-linecap="round"/>
+            <line id="s2-figlr" x1="34" y1="64" x2="38" y2="80" stroke="#f0ece0" stroke-width="1.8" stroke-linecap="round"/>
+          </g>
+          <g id="s2-prodcheck"><circle cx="164" cy="62" r="7" fill="rgba(34,197,94,0.15)" stroke="#22c55e" stroke-width="1"/><polyline points="160,62 163,65 169,58" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></g>
+          <line x1="5" y1="87" x2="195" y2="87" stroke="rgba(240,236,224,0.07)" stroke-width="0.8"/>
+        </svg>
       </div>
-      <div class="stat-item">
-        <span class="stat-number">No MOQ</span>
-        <span class="stat-label">Order as few as you need</span>
+      <div class="step-title">We model & prep</div>
+      <div class="step-desc">We prepare the file, integrate your logo and choose the right material.</div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="hiw-card">
+      <span class="card-n">03</span>
+      <div class="card-ic"><i class="ti ti-eye"></i></div>
+      <div class="anim-box">
+        <svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+          <rect x="5" y="68" width="52" height="4" rx="2" fill="#1e1e1e"/>
+          <rect x="8" y="72" width="4" height="14" rx="1" fill="#1a1a1a"/>
+          <rect x="50" y="72" width="4" height="14" rx="1" fill="#1a1a1a"/>
+          <rect x="14" y="52" width="30" height="18" rx="2" fill="#1a1a1a" stroke="#2a2a2a" stroke-width="0.8"/>
+          <rect x="8" y="68" width="42" height="3" rx="1" fill="#1e1e1e"/>
+          <rect id="s3-laptop" x="17" y="55" width="24" height="12" rx="1" fill="rgba(249,115,22,0.1)"/>
+          <text x="27" y="63" text-anchor="middle" font-family="Syne,sans-serif" font-size="6" font-weight="800" fill="rgba(240,236,224,0.5)">S</text>
+          <circle cx="31" cy="62" r="1.5" fill="#F97316"/>
+          <circle cx="29" cy="28" r="7" fill="none" stroke="#f0ece0" stroke-width="1.8"/>
+          <line x1="29" y1="35" x2="29" y2="52" stroke="#f0ece0" stroke-width="1.8" stroke-linecap="round"/>
+          <g id="s3-sarm"><line x1="29" y1="42" x2="20" y2="52" stroke="#f0ece0" stroke-width="1.8" stroke-linecap="round"/></g>
+          <line x1="29" y1="42" x2="38" y2="50" stroke="#f0ece0" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="29" y1="52" x2="25" y2="66" stroke="#f0ece0" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="29" y1="52" x2="33" y2="66" stroke="#f0ece0" stroke-width="1.8" stroke-linecap="round"/>
+          <g id="s3-env"><rect x="72" y="40" width="36" height="26" rx="3" fill="#1e1e1e" stroke="#F97316" stroke-width="1.2"/><polyline points="72,40 90,54 108,40" stroke="#F97316" stroke-width="1.2" fill="none"/><text x="90" y="58" text-anchor="middle" font-family="Syne,sans-serif" font-size="7" font-weight="800" fill="rgba(240,236,224,0.35)">S</text><circle cx="96" cy="57" r="2" fill="rgba(249,115,22,0.4)"/></g>
+          <g id="s3-envcheck"><circle cx="90" cy="53" r="9" fill="rgba(34,197,94,0.15)" stroke="#22c55e" stroke-width="1.2"/><polyline points="85,53 89,57 96,48" stroke="#22c55e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></g>
+          <circle cx="170" cy="28" r="7" fill="none" stroke="#f0ece0" stroke-width="1.8"/>
+          <line x1="170" y1="35" x2="170" y2="55" stroke="#f0ece0" stroke-width="1.8" stroke-linecap="round"/>
+          <g id="s3-custarm"><line x1="170" y1="42" x2="155" y2="52" stroke="#f0ece0" stroke-width="1.8" stroke-linecap="round"/></g>
+          <line x1="170" y1="42" x2="180" y2="50" stroke="#f0ece0" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="170" y1="55" x2="166" y2="69" stroke="#f0ece0" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="170" y1="55" x2="174" y2="69" stroke="#f0ece0" stroke-width="1.8" stroke-linecap="round"/>
+          <g id="s3-thumb"><text x="182" y="22" font-size="15" opacity="0">👍</text></g>
+          <line x1="5" y1="87" x2="195" y2="87" stroke="rgba(240,236,224,0.07)" stroke-width="0.8"/>
+        </svg>
       </div>
-      <div class="stat-item">
-        <span class="stat-number">PLA</span>
-        <span class="stat-label">Durable material, sharp detail</span>
+      <div class="step-title">You approve</div>
+      <div class="step-desc">Preview sent. You say go — production starts immediately.</div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="hiw-card">
+      <span class="card-n">04</span>
+      <div class="card-ic"><i class="ti ti-package"></i></div>
+      <div class="anim-box">
+        <svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg" style="overflow:visible;">
+          <circle cx="20" cy="32" r="7" fill="none" stroke="#f0ece0" stroke-width="1.8"/>
+          <line x1="20" y1="39" x2="20" y2="57" stroke="#f0ece0" stroke-width="1.8" stroke-linecap="round"/>
+          <g id="s4-carm"><line x1="20" y1="47" x2="32" y2="55" stroke="#f0ece0" stroke-width="1.8" stroke-linecap="round"/></g>
+          <line x1="20" y1="47" x2="10" y2="55" stroke="#f0ece0" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="20" y1="57" x2="16" y2="71" stroke="#f0ece0" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="20" y1="57" x2="24" y2="71" stroke="#f0ece0" stroke-width="1.8" stroke-linecap="round"/>
+          <g id="s4-box"><rect x="34" y="60" width="20" height="16" rx="2" fill="#1e1e1e" stroke="#F97316" stroke-width="1.2"/><line x1="34" y1="68" x2="54" y2="68" stroke="#F97316" stroke-width="0.8" opacity="0.4"/><text x="44" y="71" text-anchor="middle" font-family="Syne,sans-serif" font-size="5" font-weight="800" fill="rgba(249,115,22,0.6)">S.</text></g>
+          <g id="s4-thumb"><text x="8" y="20" font-size="14" opacity="0">👍</text></g>
+          <g id="s4-truck">
+            <rect x="55" y="43" width="62" height="32" rx="3" fill="#1e1e1e" stroke="#2a2a2a" stroke-width="1"/>
+            <line x1="87" y1="43" x2="87" y2="75" stroke="#2a2a2a" stroke-width="0.8"/>
+            <rect x="90" y="48" width="13" height="12" rx="1" fill="#252525" stroke="#333" stroke-width="0.5"/>
+            <text x="96" y="57" text-anchor="middle" font-family="Syne,sans-serif" font-size="5" font-weight="800" fill="rgba(249,115,22,0.4)">S.</text>
+            <rect x="117" y="48" width="35" height="27" rx="4" fill="#1a1a1a" stroke="#2a2a2a" stroke-width="1"/>
+            <rect x="121" y="52" width="22" height="13" rx="2" fill="#0d1a0d"/>
+            <circle cx="55" cy="68" r="2.5" fill="#F97316" opacity="0.85"/>
+            <circle cx="55" cy="68" r="4.5" fill="rgba(249,115,22,0.1)"/>
+            <rect x="148" y="52" width="4" height="7" rx="1" fill="#1a1a1a"/>
+            <circle id="s4-smoke1" cx="152" cy="52" r="2" fill="rgba(240,236,224,0.12)" opacity="0"/>
+            <circle id="s4-smoke2" cx="152" cy="52" r="2" fill="rgba(240,236,224,0.08)" opacity="0"/>
+            <circle id="s4-smoke3" cx="152" cy="52" r="2" fill="rgba(240,236,224,0.05)" opacity="0"/>
+            <g id="s4-w1"><circle cx="76" cy="76" r="9" fill="#111" stroke="#2a2a2a" stroke-width="1.5"/><circle cx="76" cy="76" r="5" fill="none" stroke="#333" stroke-width="1"/><line x1="76" y1="71" x2="76" y2="81" stroke="#2a2a2a" stroke-width="1.5"/><line x1="71" y1="76" x2="81" y2="76" stroke="#2a2a2a" stroke-width="1.5"/></g>
+            <g id="s4-w2"><circle cx="132" cy="76" r="9" fill="#111" stroke="#2a2a2a" stroke-width="1.5"/><circle cx="132" cy="76" r="5" fill="none" stroke="#333" stroke-width="1"/><line x1="132" y1="71" x2="132" y2="81" stroke="#2a2a2a" stroke-width="1.5"/><line x1="127" y1="76" x2="137" y2="76" stroke="#2a2a2a" stroke-width="1.5"/></g>
+          </g>
+          <line x1="0" y1="87" x2="200" y2="87" stroke="rgba(240,236,224,0.07)" stroke-width="0.8"/>
+          <text x="55" y="96" font-size="7" fill="rgba(249,115,22,0.4)" font-family="DM Sans,sans-serif">BE · NL · FR · DE</text>
+        </svg>
       </div>
-      <div class="stat-item">
-        <span class="stat-number">BE / NL</span>
-        <span class="stat-label">Shipping across Benelux</span>
-      </div>
+      <div class="step-title">Delivered in 48h</div>
+      <div class="step-desc">Fast shipping to Belgium, Netherlands, France and Germany.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════ SHIPPING ══════ -->
+<section class="ship-sec">
+  <div class="sec-lbl">Shipping</div>
+  <div class="sec-title" style="margin-bottom:20px;">We deliver to 4 countries.</div>
+  <div class="ship-grid">
+    <div class="ship-card"><div class="ship-flag">🇧🇪</div><div class="ship-country">Belgium</div><div class="ship-info">All provinces<br>Standard & express</div><div class="ship-time">1–2 days</div></div>
+    <div class="ship-card"><div class="ship-flag">🇳🇱</div><div class="ship-country">Netherlands</div><div class="ship-info">Full coverage<br>Standard & express</div><div class="ship-time">1–2 days</div></div>
+    <div class="ship-card"><div class="ship-flag">🇫🇷</div><div class="ship-country">France</div><div class="ship-info">Standard shipping<br>Northern regions faster</div><div class="ship-time">2–4 days</div></div>
+    <div class="ship-card"><div class="ship-flag">🇩🇪</div><div class="ship-country">Germany</div><div class="ship-info">Standard shipping<br>Western regions faster</div><div class="ship-time">2–4 days</div></div>
+  </div>
+</section>
+
+<!-- ══════ CTA ══════ -->
+<div class="cta">
+  <div class="cta-t">Free sample<br>for your brand.</div>
+  <div class="cta-s">Send us your logo and we'll print a free sample.<br>See the quality before placing a single order.</div>
+  <div class="bp" style="margin:0 auto;">Get your free sample →</div>
+</div>
+
+<!-- ══════ FOOTER ══════ -->
+<footer class="footer">
+  <div>
+    <div class="f-logo">Skushy<span>.</span></div>
+    <div class="f-tagline">Custom 3D printing · BE · NL · FR · DE</div>
+    <div class="f-icons">
+      <i class="ti ti-brand-instagram f-icon"></i>
+      <i class="ti ti-brand-linkedin f-icon"></i>
+      <i class="ti ti-mail f-icon"></i>
     </div>
   </div>
-
-  <!-- WORK -->
-  <div id="work">
-    <div class="section">
-      <div class="section-header">
-        <div>
-          <p class="section-label">Portfolio</p>
-          <h2 class="section-title">Made for real brands.</h2>
-        </div>
-      </div>
-
-      <div class="portfolio-wrapper">
-        <div class="portfolio-grid" id="portfolioGrid">
-          <!-- Images loaded automatically from /images folder -->
-        </div>
-
-        <div class="portfolio-nav">
-          <button id="prevBtn" onclick="changePage(-1)" disabled>&#8592;</button>
-          <span class="portfolio-counter" id="pageCounter">1 / 1</span>
-          <button id="nextBtn" onclick="changePage(1)">&#8594;</button>
-        </div>
-
-        <p class="portfolio-disclaimer-inline">Concept Design – Not Affiliated with Brand</p>
-
-      </div>
-    </div>
+  <div class="f-col">
+    <h4>Products</h4>
+    <a>Vases & Planters</a><a>Birthday Products</a><a>Fidgets</a><a>Home Decor</a><a>Wholesale</a>
   </div>
-
-  <!-- DISCLAIMER -->
-  <div class="disclaimer-bar">
-    <div class="disclaimer-inner">
-      <p class="disclaimer-title">Disclaimer</p>
-      <p>All designs shown are original concept works by Skushy, created for portfolio purposes only. Any brand names, logos, or trademarks belong to their respective owners and are used solely to demonstrate design capabilities. No affiliation, endorsement, or partnership is implied. These items are not official products and are not offered for sale. If you are a rights holder and wish to request removal, please contact us.</p>
-    </div>
+  <div class="f-col">
+    <h4>Company</h4>
+    <a>About us</a><a>Contact</a><a>FAQ</a><a>Shipping</a><a>Privacy</a>
   </div>
+</footer>
+<div class="f-btm">
+  <div class="f-copy">© 2026 Skushy · All rights reserved</div>
+  <div class="f-langs">
+    <span class="f-lang" id="f-en">EN</span>
+    <span style="color:var(--t3);">|</span>
+    <span class="f-lang" id="f-nl">NL</span>
+  </div>
+</div>
 
-  <!-- HOW IT WORKS -->
-  <section class="how-section" id="how">
-    <div class="how-inner">
-      <p class="section-label" style="margin-bottom:12px;">Process</p>
-      <h2 class="section-title">How it works.</h2>
-      <div style="height:48px"></div>
-      <div class="steps-grid">
-        <div class="step">
-          <span class="step-number">01</span>
-          <span class="step-title">Send your logo</span>
-          <p class="step-desc">Fill in the quote form with your logo file and quantity. We handle the rest.</p>
-        </div>
-        <div class="step">
-          <span class="step-number">02</span>
-          <span class="step-title">We design it</span>
-          <p class="step-desc">We turn your logo into a 3D model, optimized for clean printing and sharp detail.</p>
-        </div>
-        <div class="step">
-          <span class="step-number">03</span>
-          <span class="step-title">You approve</span>
-          <p class="step-desc">We send a preview before printing. You say go, we start production.</p>
-        </div>
-        <div class="step">
-          <span class="step-number">04</span>
-          <span class="step-title">Delivered</span>
-          <p class="step-desc">Your keychains are packed and shipped anywhere in Belgium or the Netherlands.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+<script>
+// ── Lang toggle ──
+function applyLang(l){
+  document.getElementById('btn-en').classList.toggle('on',l==='en');
+  document.getElementById('btn-nl').classList.toggle('on',l==='nl');
+  document.getElementById('f-en').style.color=l==='en'?'var(--t2)':'var(--t3)';
+  document.getElementById('f-nl').style.color=l==='nl'?'var(--t2)':'var(--t3)';
+  const labels={
+    en:{login:'Log in',cart:'Cart',home:'Home',products:'Products',custom:'Custom Design',free:'Free Sample',about:'About'},
+    nl:{login:'Inloggen',cart:'Winkelwagen',home:'Home',products:'Producten',custom:'Op Maat',free:'Gratis Sample',about:'Over ons'}
+  };
+  const t=labels[l];
+  document.getElementById('t-login').textContent=t.login;
+  document.getElementById('t-cart').textContent=t.cart;
+  document.getElementById('t-home').textContent=t.home;
+  document.getElementById('t-products').textContent=t.products;
+  document.getElementById('t-custom').textContent=t.custom;
+  document.getElementById('t-free').textContent=t.free;
+  document.getElementById('t-about').textContent=t.about;
+}
+document.getElementById('btn-en').addEventListener('click',()=>applyLang('en'));
+document.getElementById('btn-nl').addEventListener('click',()=>applyLang('nl'));
+document.getElementById('f-en').addEventListener('click',()=>applyLang('en'));
+document.getElementById('f-nl').addEventListener('click',()=>applyLang('nl'));
 
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="about-section">
-      <div class="about-grid">
+// ── Dropdowns ──
+function closeAll(){
+  document.querySelectorAll('.dd').forEach(d=>d.classList.remove('open'));
+  document.querySelectorAll('.nl').forEach(n=>n.classList.remove('open'));
+  document.querySelectorAll('.chev').forEach(c=>c.classList.remove('open'));
+}
+document.querySelectorAll('.nl[data-nav]').forEach(nl=>{
+  const key=nl.getAttribute('data-nav');
+  if(!['products','custom','about','supply'].includes(key))return;
+  nl.addEventListener('click',e=>{
+    e.stopPropagation();
+    const dd=document.getElementById('dd-'+key);
+    const chev=document.getElementById('chev-'+key);
+    const wasOpen=dd&&dd.classList.contains('open');
+    closeAll();
+    if(!wasOpen&&dd){dd.classList.add('open');nl.classList.add('open');if(chev)chev.classList.add('open');}
+  });
+});
+document.addEventListener('click',e=>{if(!e.target.closest('.ni'))closeAll();});
+document.addEventListener('scroll',closeAll);
 
-        <div class="about-left">
-          <p class="section-label">About us</p>
-          <h2 class="section-title">We started small.<br>We think big.</h2>
-          <p>Skushy started with one printer, one idea, and a lot of trial and error. We wanted to make something real, something you could hold in your hand and actually be proud of.</p>
-          <p>Today we work with companies across Belgium and the Netherlands, turning their logos into high-quality 3D printed keychains. Not mass-produced. Not generic. Made specifically for each brand.</p>
-          <p>Every business deserves to look the part. That is why we offer a free sample quote with your own logo, no strings attached. See it before you commit.</p>
-
-          <div class="founder-tag">
-            <div class="founder-avatar">E</div>
-            <div class="founder-info">
-              <span class="founder-name">Efe</span>
-              <span class="founder-role">Founder, Skushy</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="about-right">
-          <div class="about-card">
-            <p class="about-card-title">Free sample for your brand</p>
-            <p>Send us your logo and we print a sample keychain for free. You see the quality before placing a single order.</p>
-          </div>
-          <div class="about-card">
-            <p class="about-card-title">Quality over quantity</p>
-            <p>We use PLA with sharp detail and clean finishes. No blurry logos. No rough edges. If it does not look good, we reprint it.</p>
-          </div>
-          <div class="about-card">
-            <p class="about-card-title">Built for businesses</p>
-            <p>Trade fairs, welcome packages, branded gifts. Our keychains help companies make a lasting impression without spending a lot.</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- QUOTE FORM -->
-  <section class="quote-section" id="quote">
-    <div class="quote-inner">
-      <p class="section-label">Get started</p>
-      <h2 class="section-title">Request a quote.</h2>
-      <p class="quote-subtitle">Fill in the form and we will get back to you within 24 hours.</p>
-
-      <form id="quoteForm" onsubmit="handleSubmit(event)" enctype="multipart/form-data">
-        <input type="hidden" name="access_key" value="c74c9c86-f505-44e6-bdb0-0cc12d97d098" />
-        <input type="hidden" name="subject" value="New Quote Request - Skushy" />
-
-        <div class="form-grid">
-
-          <div class="form-group">
-            <label for="name">Your name *</label>
-            <input type="text" id="name" name="name" placeholder="Jan De Smedt" required />
-          </div>
-
-          <div class="form-group">
-            <label for="company">Company name *</label>
-            <input type="text" id="company" name="company" placeholder="Your company" required />
-          </div>
-
-          <div class="form-group">
-            <label for="email">Email address *</label>
-            <input type="email" id="email" name="email" placeholder="jan@company.com" required />
-          </div>
-
-          <div class="form-group">
-            <label for="phone">Phone number</label>
-            <input type="tel" id="phone" name="phone" placeholder="+32 470 00 00 00" />
-          </div>
-
-          <div class="form-group">
-            <label for="quantity">Quantity *</label>
-            <select id="quantity" name="quantity" required>
-              <option value="" disabled selected>Select quantity</option>
-              <option value="1-10">1 to 10</option>
-              <option value="11-25">11 to 25</option>
-              <option value="26-50">26 to 50</option>
-              <option value="51-100">51 to 100</option>
-              <option value="100+">100 or more</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="website">Website or Google Maps link</label>
-            <input type="url" id="website" name="website" placeholder="https://yourcompany.com" />
-          </div>
-
-          <div class="form-group form-full">
-            <label for="logo">Upload your logo</label>
-            <input type="file" id="logo" name="logo" accept=".png,.jpg,.jpeg,.svg,.pdf,.ai,.eps" style="padding: 10px 16px; cursor: pointer;" />
-            <span style="font-size: 12px; color: var(--grey-400); margin-top: 4px;">PNG, JPG, SVG, PDF, AI or EPS. Max 10MB.</span>
-          </div>
-
-          <div class="form-group form-full">
-            <label for="message">Anything else we should know?</label>
-            <textarea id="message" name="message" placeholder="Color preferences, deadline, special requests..."></textarea>
-          </div>
-
-        </div>
-
-        <button type="submit" class="form-submit" id="submitBtn">Send Quote Request</button>
-        <p class="form-note">No commitment. We reply within 24 hours.</p>
-      </form>
-
-      <div class="success-msg" id="successMsg">
-        Your request has been sent. We will get back to you within 24 hours.
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <span class="footer-logo">Skushy<span>.</span></span>
-    <p>Custom 3D printed keychains for businesses in Belgium and the Netherlands.</p>
-    <p style="color:#444">&copy; 2026 Skushy</p>
-  </footer>
-
-  <script>
-    // PORTFOLIO - load images dynamically from API
-    const PER_PAGE = 6;
-    let currentPage = 0;
-    let allImages = [];
-
-    function buildGrid(images) {
-      allImages = images;
-      const grid = document.getElementById('portfolioGrid');
-      grid.innerHTML = '';
-
-      images.forEach(filename => {
-        const name = filename.replace(/\.[^.]+$/, '');
-        const div = document.createElement('div');
-        div.className = 'portfolio-item';
-        div.innerHTML = `
-          <img src="images/${filename}" loading="lazy" />
-          <div class="portfolio-overlay">
-            <span class="portfolio-client">${name}</span>
-            <span class="portfolio-tag">Custom Logo Keychain</span>
-          </div>`;
-        grid.appendChild(div);
-      });
-
-      showPage(0);
-    }
-
-    function getItems() {
-      return Array.from(document.querySelectorAll('.portfolio-item'));
-    }
-
-    function totalPages() {
-      return Math.max(1, Math.ceil(getItems().length / PER_PAGE));
-    }
-
-    function showPage(page) {
-      const items = getItems();
-      const total = totalPages();
-      currentPage = Math.max(0, Math.min(page, total - 1));
-
-      items.forEach((item, i) => {
-        const inPage = i >= currentPage * PER_PAGE && i < (currentPage + 1) * PER_PAGE;
-        item.classList.toggle('active', inPage);
-      });
-
-      document.getElementById('prevBtn').disabled = currentPage === 0;
-      document.getElementById('nextBtn').disabled = currentPage >= total - 1;
-      document.getElementById('pageCounter').textContent = (currentPage + 1) + ' / ' + total;
-    }
-
-    function changePage(dir) {
-      showPage(currentPage + dir);
-    }
-
-    // Fetch image list from API
-    fetch('/api/images')
-      .then(r => r.json())
-      .then(data => buildGrid(data.images || []))
-      .catch(() => buildGrid([]));
-
-    function handleSubmit(e) {
-      e.preventDefault();
-      const btn = document.getElementById('submitBtn');
-      btn.textContent = 'Sending...';
-      btn.disabled = true;
-
-      const form = document.getElementById('quoteForm');
-      const formData = new FormData(form);
-
-      fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        body: formData
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          form.style.display = 'none';
-          document.getElementById('successMsg').style.display = 'block';
-        } else {
-          btn.textContent = 'Send Quote Request';
-          btn.disabled = false;
-          alert('Something went wrong. Please try again.');
-        }
-      })
-      .catch(() => {
-        btn.textContent = 'Send Quote Request';
-        btn.disabled = false;
-        alert('Something went wrong. Please try again.');
-      });
-    }
-
-    // Scroll reveal
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-        }
-      });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.step').forEach(el => {
-      el.style.opacity = '0';
-      el.style.transform = 'translateY(20px)';
-      el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-      observer.observe(el);
-    });
-  </script>
-
+// ── Printer scroll animation ──
+const clipRect=document.getElementById('clipRect');
+const logoCR=document.getElementById('logoCR');
+const progFill=document.getElementById('progFill');
+const pctTxt=document.getElementById('pctTxt');
+const statusLine=document.getElementById('statusLine');
+const statusVal=document.getElementById('statusVal');
+const nozzleGlow=document.getElementById('nozzleGlow');
+const filLine=document.getElementById('filLine');
+const bedGlow=document.getElementById('bedGlow');
+const TH=document.getElementById('TH');
+const kcRing=document.getElementById('kcRing');
+const screenTxt=document.getElementById('screenTxt');
+const scrollHint=document.getElementById('scrollHint');
+const statusDot=document.getElementById('statusDot');
+const doneReveal=document.getElementById('doneReveal');
+const KC_BOT=228,KC_TOP=145,KC_H=KC_BOT-KC_TOP,LG_BOT=228,LG_TOP=160,LG_H=LG_BOT-LG_TOP;
+const PSTART=80,PEND=600;
+let iX=200,iD=1,iA=true,iR;
+function setTH(x){TH.setAttribute('transform',`translate(${x-200},0)`);}
+function iLoop(){if(!iA)return;iX+=iD*1.1;if(iX>265)iD=-1;if(iX<135)iD=1;setTH(iX);iR=requestAnimationFrame(iLoop);}
+iLoop();
+const phases=[
+  {p:0,   line:'Scroll to start printing...', val:'Idle',        col:'#555'},
+  {p:.03, line:'Heating nozzle & bed...',      val:'Warming up',  col:'#f97316'},
+  {p:.12, line:'Printing layer 1 / 40...',     val:'Printing',    col:'#22c55e'},
+  {p:.35, line:'Printing layer 14 / 40...',    val:'Printing',    col:'#22c55e'},
+  {p:.60, line:'Printing layer 24 / 40...',    val:'Printing',    col:'#22c55e'},
+  {p:.82, line:'Finishing layer 33 / 40...',   val:'Almost done', col:'#60a5fa'},
+  {p:.97, line:'Print complete!',              val:'Done ✓',      col:'#F97316'},
+];
+let wasDone=false;
+window.addEventListener('scroll',()=>{
+  const st=window.scrollY;
+  const prog=Math.max(0,Math.min(1,(st-PSTART)/(PEND-PSTART)));
+  progFill.style.width=Math.round(prog*100)+'%';
+  pctTxt.textContent=Math.round(prog*100)+'%';
+  const ph=phases.reduce((a,p)=>prog>=p.p?p:a,phases[0]);
+  statusLine.textContent=ph.line+' ';statusVal.textContent=ph.val;statusVal.style.color=ph.col;
+  if(prog>.01){
+    if(iA){iA=false;cancelAnimationFrame(iR);}
+    scrollHint.style.opacity='0';
+    const pr=prog>.03&&prog<.97;
+    nozzleGlow.setAttribute('opacity',pr?'0.9':'0');
+    filLine.setAttribute('opacity',pr?'1':'0');
+    bedGlow.setAttribute('opacity',pr?'0.4':'0');
+    statusDot.style.background=pr?'#22c55e':(prog>=.97?'#F97316':'#f97316');
+    screenTxt.textContent=pr?'PRNT':(prog>=.97?'DONE':'HEAT');
+    screenTxt.setAttribute('fill',pr?'#22c55e':(prog>=.97?'#F97316':'#f97316'));
+    const rev=Math.min(prog/.95,1);
+    const lh=rev*KC_H;const lt=KC_BOT-lh;
+    clipRect.setAttribute('y',lt);clipRect.setAttribute('height',lh);
+    const lr=Math.max(0,(prog-.5)/.45);
+    const llh=Math.min(lr,1)*LG_H;
+    logoCR.setAttribute('y',LG_BOT-llh);logoCR.setAttribute('height',llh);
+    kcRing.setAttribute('opacity',prog>=.97?'1':'0');
+    if(prog>=.97&&!wasDone){wasDone=true;doneReveal.classList.add('show');}
+    else if(prog<.97&&wasDone){wasDone=false;doneReveal.classList.remove('show');}
+    if(pr){const nx=148+rev*100;const cx=Math.max(148,Math.min(248,nx));setTH(cx);filLine.setAttribute('x1',cx);filLine.setAttribute('x2',cx);filLine.setAttribute('y1',136);filLine.setAttribute('y2',lt);}
+  } else {
+    if(!iA){iA=true;iLoop();}
+    nozzleGlow.setAttribute('opacity','0');filLine.setAttribute('opacity','0');bedGlow.setAttribute('opacity','0');
+    clipRect.setAttribute('height','0');clipRect.setAttribute('y','228');
+    logoCR.setAttribute('height','0');kcRing.setAttribute('opacity','0');
+    doneReveal.classList.remove('show');wasDone=false;
+    scrollHint.style.opacity='1';screenTxt.textContent='IDLE';screenTxt.setAttribute('fill','#22c55e');statusDot.style.background='#22c55e';
+  }
+});
+</script>
 </body>
 </html>
